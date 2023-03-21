@@ -1,0 +1,92 @@
+body {
+    background-color: #ffffff;
+    font-family: calibri;
+}
+
+.user_reg{
+    padding: 25px 20px 45px 20px;
+}
+
+/*.search{
+    padding: 50px 0px 70px 12px;
+}*/
+
+.search-input{
+    height: 32px;
+    width: 195px;
+    font-size: 17px;
+}
+
+.button{
+	border: none;
+  	color: white;
+	padding: 10px 15px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16px;
+	cursor: pointer;
+	text-transform: uppercase;
+	background-color: #2E64FE;
+}
+
+.nav {
+    height: 100%;
+    width: 290px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgb(9, 9, 9);
+    padding-top: 25px;
+}
+  
+
+.nav a, .dropdown-btn {
+    padding: 5px 7px 5px 12px;
+    text-decoration: none;
+    font-size: 27px;
+    color: #919191;
+    display: block;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    /*outline: none;*/
+}
+
+  
+.nav a:hover, .dropdown-btn:hover {
+    color: #ffffff;
+}
+  
+
+a.active {
+    background-color: #FE642F;
+    color: #ffffff;
+    width: 98%; /*93.6*/
+}
+  
+
+.dropdown-container {
+    padding-left: 28px;
+}
+  
+
+#log-out{
+    position: absolute;
+    top: 88%;
+    left: 34%;
+    border: none;
+  	color: white;
+	padding: 10px 25px;
+	text-align: center;
+	text-decoration: none;
+	/*display: inline-block;*/
+	font-size: 12px;
+	/*margin: 4px 2px;*/
+	cursor: pointer;
+	text-transform: uppercase;
+	background-color: #FE642F;
+    
+}
+
