@@ -1,6 +1,5 @@
 <?php
 
-
 $mysql = new mysqli('localhost', 'root', '1program4*al', 'zparts');
 
     if(!$mysql) {

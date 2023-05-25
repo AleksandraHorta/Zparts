@@ -13,7 +13,7 @@
     $search = htmlspecialchars($search);
          
 
-    if ($result = $mysql->query("SELECT `user_id`, `name`, `surname`, `phone`, `email`, `role`
+    if ($result = $mysql->query("SELECT `id`, `name`, `surname`, `phone`, `email`, `role`
                 FROM `users` WHERE `name` LIKE '%$search%'
                 OR `surname` LIKE '%$search%' OR `phone` LIKE '%$search%'
                 OR `email` LIKE '%$search%'")) {
@@ -26,7 +26,7 @@
         echo "<table><tr><th>ID</th><th>Name</th><th>Surname</th><th>Phone</th><th>Email</th><th>Role</th></tr>";
         foreach ($result as $row) {
             echo "<tr>";
-                echo "<td>" . $row["user_id"] . "</td>";
+                echo "<td>" . $row["id"] . "</td>";
                 echo "<td>" . $row["name"] . "</td>";
                 echo "<td>" . $row["surname"] . "</td>";
                 echo "<td>" . $row["phone"] . "</td>";

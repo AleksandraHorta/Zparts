@@ -13,25 +13,34 @@
             position: fixed;
             right: 0;
             top: 0;
-            width: 80%;
+            width: 50%;
             height: 100%;
         }
 
         #d-users{
-            margin-top: 100px;
-            margin-left: 100px;
+            position: absolute;
+            top: 15%;
+            left: -38%;
+
+
         }
 
         .block-left {
             position: fixed;
-            right: -150px;
+            right: 0px;
             top: 0;
             width: 50%;
-            height: 70%;
+            height: 100%;
         }
-        #d-bill{
-            margin-top: 100px;
-            margin-right: 70px;
+        #d-invoice{
+            position: absolute;
+            top: 25%;
+            right: 48%;
+        }
+        #d-order {
+            position: absolute;
+            top: 15%;
+            right: 45%;
         }
 
     </style>
@@ -44,35 +53,33 @@
         <div class="user_reg" style="text-align: center">
             <img src="images/favicon.png" width="100" height="95">
         </div>
-        <a href="timetable.html">Timetable</a>
+        <a href="timetable.php">Timetable</a>
+        <a href="requests.php">Requests</a>
         <button class="dropdown-btn">DATABASES &#8595; </button>
         <div class="dropdown-container">
-            <a href="#" onclick="maintnanceBase()">Maintnance History</a>
-            <a href="#" onclick="carsBase()">Cars</a>
+            <a onclick="location.href='../db/maintnancesBase.php';">Maintnance History</a>
+            <a onclick="location.href='../db/carsBase.php';">Cars</a>
             <a href="db/usersBase.php">Users</a>
             <a href="db/servicesBase.php">Our Services</a>
             <a >Details</a>
         </div>
         <a class="active" href="pdf.html">PDF</a>
-        <a href="statistics.html">Statistics</a>
+        <!--<a href="statistics.html">Statistics</a>-->
         <button class="button" onclick="location.href='../php/exit.php';" id="log-out">LOG OUT</button>
     </div>
 
 
 
     <div class="block-right">
-        <button class="button" id="d-users" onclick="location.href='../fpdf/download-users.php';">Download info about users</button>
+        <button class="button" id="d-users" onclick="location.href='../fpdf/latestDoc.php';">View latest Documents</button>
     </div>
 
 
     <div class="block-left">
-        <button class="button" id="d-bill" onclick="location.href='../fpdf/taxBill.php';">Download Tax Bill</button>
+        <button class="button" id="d-order" onclick="location.href='../fpdf/workOrder.php';">Create Work order</button>
+        <button class="button" id="d-invoice" onclick="location.href='../fpdf/invoice.php';">Create Invoice</button>
     </div>
 
-
-    <div class="block-left2">
-        <button class="button" id="d-exercise" onclick="location.href='../fpdf/workExercise.php';">Download work Exercise</button>
-    </div>
 
     
 

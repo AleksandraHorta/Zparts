@@ -6,15 +6,15 @@
 
 .container{
 	background: #1a2033;
-	width: 350px;
-	height: 400px;
+	width: 355px;
+	height: 465px;
 	padding-bottom: 20px;
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	margin: auto;
-    padding: 45px 60px 60px 60px;
+    padding: 30px 60px 60px 35px;
 }
 
 
@@ -41,6 +41,14 @@
 	font-size: 15px;
 }
 
+.terms{
+	width: 360px;
+	height: 35px;
+	margin-top: 0px;
+	font-family: 'Calibri';
+	font-size: 15px;
+}
+
 .textBox{
 	height: 35px;
 	width: 190px;
@@ -59,7 +67,7 @@
 
 
 .terms{
-	line-height: 35px;
+	line-height: 25px;
 	text-align: center;
 	color: white;
 }
@@ -80,6 +88,6 @@
 }
 
 .user_reg{
-	padding-bottom: 20px;
+	padding-bottom: 5px;
 }
 

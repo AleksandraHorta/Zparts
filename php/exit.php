@@ -1,6 +1,7 @@
 <?php
+session_start();
+session_destroy();
 
-    setcookie('cookie', $user['email'], time() - 3600*3, "/");
-    header('Location: /');
+header('Location: /');
 
 ?>

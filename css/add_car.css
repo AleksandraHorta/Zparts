@@ -21,13 +21,17 @@ body{
     background: transparent;
     color: black;
     height: 19px;
-	width: 223px;
+	width: 224px;
     border: 1px solid red;
     /*background: repeating-linear-gradient(-60deg, rgb(0, 0, 0) 0, rgb(0, 0, 0) 1px, transparent 1px, transparent 5px);*/
 }
 
 #vin{
     width: 275px;
+}
+
+#reg_date{
+    width: 227px;
 }
 
 .input1{
@@ -39,7 +43,7 @@ body{
 
 .input2{
     padding-left: 181px;
-    padding-bottom: 20px;
+    padding-bottom: 22px;
 }
 
 .input3{
@@ -111,3 +115,20 @@ body{
     padding-top: 15px;
 }
 
+.glow{
+    font-size: 40px;
+    color: black;
+    text-align: right;
+    animation: glow 1s ease-in-out infinite alternate;
+    margin-right: 350px;
+    margin-top: 60px;
+}
+
+@-webkit-keyframes glow {
+    from {
+      text-shadow: 0 0 10px #fff, 0 0 20px #FE642F, 0 0 30px #FE642F, 0 0 40px #FE642F, 0 0 50px #FE642F, 0 0 60px #FE642F, 0 0 70px #FE642F;
+    }
+    /*to {
+      text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+    }*/
+  }

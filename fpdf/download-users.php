@@ -1,6 +1,6 @@
 <?php
 
-        require('../fpdf/fpdf.php');
+        require('../fpdf/tfpdf.php');
         // Database Connection 
         $conn = new mysqli('localhost', 'root', '1program4*al', 'zparts');
         //Check for connection error
@@ -9,7 +9,7 @@
         }
         // Select data from MySQL database
         $result = $conn->query("SELECT * FROM users ORDER BY `name`");
-        $pdf = new FPDF();
+        $pdf = new tFPDF();
         $pdf->AddPage();
         $pdf->SetFont('Arial','B',12);
         while($row = $result->fetch_object()){
@@ -24,4 +24,6 @@
         $pdf->Ln();
         }
         $pdf->Output();
+        
 ?>
+

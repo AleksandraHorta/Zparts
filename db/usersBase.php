@@ -78,18 +78,19 @@
                 <img src="../images/favicon.png" width="100" height="95">
             </div>
 
-            <a href="../timetable.html">Timetable</a>
+            <a href="../timetable.php">Timetable</a>
+            <a href="../requests.php">Requests</a>
 
             <button class="dropdown-btn">DATABASES &#8595; </button>
             <div class="dropdown-container">
-                <a href="#" onclick="maintnanceBase()">Maintnance History</a>
-                <a href="#" onclick="carsBase()">Cars</a>
-                <a class="active" href="#" onclick="usersBase()">Users</a>
+                <a onclick="location.href='../db/maintnancesBase.php';">Maintnance History</a>
+                <a onclick="location.href='../db/carsBase.php';">Cars</a>
+                <a class="active" onclick="location.href='../db/usersBase.php';">Users</a>
                 <a onclick="location.href='../db/servicesBase.php';">Our Services</a>
                 <a >Details</a>
             </div>
             <a href="../pdf.php">PDF</a>
-            <a href="../statistics.html">Statistics</a>
+            <!--<a href="statistics.html">Statistics</a>-->
 
             <button class="button" onclick="location.href='../php/exit.php';" id="log-out">LOG OUT</button>
 
@@ -107,7 +108,7 @@
         if ($result = $mysql->query("SELECT * FROM users")) {
             $rowsCount = mysqli_num_rows($result);
             echo "<p>Total count of users in DB: $rowsCount</p>";
-            echo "<table><tr><th>ID</th><th>Name</th><th>Surname</th><th>Phone</th><th>Email</th><th>Password</th><th>Terms</th><th>Role</th></tr>";
+            echo "<table><tr><th>ID</th><th>Name</th><th>Surname</th><th>Phone</th><th>Email</th><th>Terms</th><th>Role</th><th>Change role</th></tr>";
             foreach ($result as $row) {
                 echo "<tr>";
                     echo "<td>" . $row["id"] . "</td>";
@@ -115,9 +116,10 @@
                     echo "<td>" . $row["surname"] . "</td>";
                     echo "<td>" . $row["phone"] . "</td>";
                     echo "<td>" . $row["email"] . "</td>";
-                    echo "<td>" . $row["password"] . "</td>";
+                    //echo "<td>" . $row["password"] . "</td>";
                     echo "<td>" . $row["terms"] . "</td>";
                     echo "<td>" . $row["role"] . "</td>";
+                    echo "<td><label for='role'></label><select id='role'><option value='' selected disabled hidden>". $row["role"] ."</option><option value='user'>user</option><option value='admin'>admin</option></select></td>";
                 echo "</tr>";
             }
             echo "</table>";

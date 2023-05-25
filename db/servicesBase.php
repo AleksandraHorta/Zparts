@@ -104,7 +104,15 @@
         }
 
         .form-service2 {
-            display: none; /*Hide by default*/
+            display: block; /*Hide by default*/
+            position: absolute;
+            bottom: 185px;
+            right: 290px;
+            border: 2px solid #c0c0c0;
+        }
+
+        .form-service3 {
+            display: block; /*Hide by default*/
             position: absolute;
             bottom: 185px;
             right: 290px;
@@ -151,21 +159,30 @@
         }
 
         #delete{
-            background-color: red;
+            background-color: #F5292F;
             color: black;
             border: none;
             cursor: pointer;
-            width: 70px;
+            width: 60px;
             height: 30px;
 
         }
 
-        #update{
-            background-color: yellow;
+        #details{
+            background-color: #ADD8E6;
             color: black;
             border: none;
             cursor: pointer;
-            width: 70px;
+            width: 60px;
+            height: 30px;
+        }
+
+        #update{
+            background-color: #FFEF00;
+            color: black;
+            border: none;
+            cursor: pointer;
+            width: 60px;
             height: 30px;
 
         }
@@ -180,17 +197,18 @@
                 <div class="user_reg" style="text-align: center">
                     <img src="../images/favicon.png" width="100" height="95">
                 </div>
-                <a href="../timetable.html">Timetable</a>
+                <a href="../timetable.php">Timetable</a>
+                <a href="../requests.php">Requests</a>
                 <button class="dropdown-btn">DATABASES &#8595; </button>
                 <div class="dropdown-container">
-                    <a href="#" onclick="maintnanceBase()">Maintnance History</a>
-                    <a href="#" onclick="carsBase()">Cars</a>
+                    <a onclick="location.href='../db/maintnancesBase.php';">Maintnance History</a>
+                    <a onclick="location.href='../db/carsBase.php';">Cars</a>
                     <a onclick="location.href='../db/usersBase.php';">Users</a>
                     <a class="active" onclick="location.href='../db/servicesBase.php';">Our Services</a>
                     <a >Details</a>
                 </div>
                 <a href="../pdf.php">PDF</a>
-                <a href="../statistics.html">Statistics</a>
+                <!--<a href="statistics.html">Statistics</a>-->
                 <button class="button" onclick="location.href='../php/exit.php';" id="log-out">LOG OUT</button>   
         </div>
 
@@ -199,21 +217,16 @@
 
         <div class="form-service" id="addService">
             <form action="../php/services.php" method="post" class="form-container">
-
                 <label>Service name: </label>
                 <input type="text" placeholder="Service" name="service" required>
-
                 <label>Hours: </label>
                 <input type="number" id="hours" name="hours" placeholder="Hours" value="hours">
-
                 <!--<label>Average price: </label>
                 <input type="number" min="1.00" max="10000.00" step="0.10" placeholder="Price" name="price">-->
-
                 <button type="submit" class="btn">Add</button>
                 <button type="button" class="btn cancel" onclick="closeAdd()">Close</button>
             </form>
         </div>
-
 
 
 <?php
@@ -223,13 +236,7 @@
         if(!$mysql) {
             die("Error: " .mysqli_connect_error());
         }
-
-        if(isset($_GET['delete'])){
-            $deleted = $_GET['delete'];
-            $mysql->query("DELETE FROM services WHERE `id` = $deleted;");
-
-        }
-
+    
 
 //onclick='this.parentElement.parentElement.innerHTML='';'
 //echo "<td><button onclick='openUpdate()' type='submit' id='update' value='".$row['service_id']."' name='update'> Edit </button></td>"; 
@@ -244,11 +251,12 @@
                     echo "<td>" . $row["id"] . "</td>";
                     echo "<td>" . $row["serviceName"] . "</td>";
                     echo "<td>" . $row["hours"] . "</td>";
-                    echo "<td>" . $row["avgPrice"] . "</td>";
-                    echo "<td><button onclick='location.href='../php/edit.php' id='".$row['id']."' type='submit' value='".$row['id']."' name='update'> Edit </button></td>"; 
+                    echo "<td>" . $row["avgPrice"] . "</td>";   // id='".$row['id']."'  // onclick='location.href='../php/details.php?id='".$row['id']."'
+                    echo "<td><button onclick='openDetails()' type='submit' id='details' value='".$row['id']."' name='details'> Details </button></td>"; 
+                    echo "<td><button type='submit' id='update' value='".$row['id']."' name='update'> Edit </button></td>"; 
                     echo "<td><button type='submit' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
                 echo "</tr>";
-            }
+            }/*onclick='location.href='../php/edit.php'    onclick='openUpdate()' */
             echo "</table>";
             echo "<br>";
             $a = $rowsCount/3;
@@ -267,9 +275,84 @@
             echo "Error: " . mysqli_error($mysql);
         }
 
+        if(isset($_GET['delete'])){
+            $deleted = $_GET['delete'];
+            $mysql->query("DELETE FROM services WHERE `id` = $deleted;");
+
+        }
+
+        if(isset($_GET['details'])){
+            $selected = $_GET['details'];
+            $res = $mysql->query("SELECT * FROM services WHERE `id` = $selected;");
+
+            foreach($res as $row) {
+            
 ?>
+            <div class="form-service3" id="detailsService">
+                <form action="" class="form-container">
+
+                    <label>ID: </label>
+                    <input type="text" id="id" name="id" value="<?php echo $row["id"] ?>" disabled>
+
+                    <label>Service name: </label>
+                    <input type="text" id="serviceName" name="serviceName" value="<?php echo $row["serviceName"] ?>" disabled>
+
+                    <label>Hours: </label>
+                    <input type="number" id="hours" name="hours" value="<?php echo $row["hours"] ?>" disabled>
+
+                    <label>Average price: </label>
+                    <input type="number" min="1.00" max="10000.00" step="0.10" id="avgPrice" name="avgPrice" value="<?php echo $row["avgPrice"] ?>" disabled>
+
+                    <button type="button" class="btn cancel" onclick="closeDetails()">Close</button>
+                </form>
+            </div>
+
+    <?php    
+        }
+    }
+
+    if(isset($_GET['update'])){
+        $id = $_GET['update']
+        $service = $_POST['serviceName'] ?? '';
+        $hours = $_POST['hours'] ?? '';
+        $avgPrice = $_POST['avgPrice'] ?? '';
+        
+        $mysql->query("UPDATE services SET serviceName = '$service', hours = '$hours', avgPrice = '$avgPrice' WHERE id = '$id';");
+
+    }
+
+
+    if(isset($_GET['update'])){
+        $updated = $_GET['update'];
+        $result = $mysql->query("SELECT * FROM services WHERE id = $updated");
+
+        foreach($result as $row) {
+            
+    ?>
+
+        <div class="form-service2" id="updateService">
+        <form action="#" method="post" class="form-container">
+        
+            <label>Service name: </label>
+            <input type="text" id="service" name="service" value="<?php echo $row["serviceName"] ?>">
+
+            <label>Hours: </label>
+            <input type="number" id="hours" name="hours" value="<?php echo $row["hours"] ?>">
+
+            <label>Average price: </label>
+            <input type="number" min="1.00" max="10000.00" step="0.10" id="avgPrice" name="avgPrice" value="<?php echo $row["avgPrice"] ?>">
+
+            <button type="submit" name="update" class="btn">Update</button>
+            <button type="button" class="btn cancel" onclick="closeUpdate()">Close</button>
+        </form>
     </div>
 
+    <?php
+        }
+    }
+
+
+?>
 
     <div class="block-right">
 
@@ -284,7 +367,6 @@
 
 
             $search = $_POST['search'];  // get input text
-
             $search = trim($search); 
             $search = htmlspecialchars($search);
 
@@ -307,6 +389,7 @@
                     echo "<td>" . $row["id"] . "</td>";
                     echo "<td>" . $row["serviceName"] . "</td>";
                     echo "<td>" . $row["hours"] . "</td>";
+
                 echo "</tr>";
                 }
                 echo "</table>";
@@ -334,13 +417,21 @@
         document.getElementById("addService").style.display = "none";
     }
 
-    /*function openUpdate() {
+    function openUpdate() {
         document.getElementById("updateService").style.display = "block";
     }
 
     function closeUpdate() {
         document.getElementById("updateService").style.display = "none";
-    }*/
+    }
+
+    function openDetails() {
+        document.getElementById("detailsService").style.display = "block";
+    }
+
+    function closeDetails() {
+        document.getElementById("detailsService").style.display = "none";
+    }
 
 </script>
 </html>
