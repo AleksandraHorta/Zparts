@@ -1,3 +1,21 @@
+<?php
+session_start();
+if (isset($_SESSION['user'])) {
+    
+    $mysql = new mysqli('localhost', 'root', '1program4*al', 'zparts');
+
+    $x = $_SESSION['user']['email'];
+
+    $result = $mysql->query("SELECT role FROM users 
+                                WHERE email = '$x';");
+
+    while ($row = $result->fetch_assoc()) {
+        $role = $row['role'];
+    }
+
+    if ($role == 'admin') {
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -216,7 +234,7 @@
     
 
 
-        if ($result = $mysql->query("SELECT r.id, r.startDate, CONCAT(r.startDate, '  -  ', r.endDate) as dateTime, CONCAT(u.name, ' ', u.surname, ' - ', u.phone) as client, CONCAT(c.countryNumber, ' ', c.carBrand,' ',  c.model,' ',  YEAR(c.regDate)) as car, s.serviceName, r.comments
+        if ($result = $mysql->query("SELECT r.id, r.startDate, CONCAT(r.startDate, '  -  ', r.endDate) as dateTime, CONCAT(u.name, ' ', u.surname, ' - ', u.phone) as client, CONCAT(c.countryNumber, ' ', c.carBrand,' ',  c.model, ', ',  YEAR(c.regDate)) as car, s.serviceName, r.comments
                                         FROM requests as r 
                                         INNER JOIN users as u ON r.user_id=u.id 
                                         INNER JOIN cars as c ON c.id=r.car_id 
@@ -373,3 +391,12 @@
 
 </script>
 </html>
+
+<?php
+} else {
+    echo "<div style='margin-top: 290px;'>";
+    echo "<h1 style='text-align: center; height: 50%';>Something went wrong! You don't have access to this page!</h1>";
+    echo "</div>";
+}
+}
+?>

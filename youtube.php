@@ -9,12 +9,12 @@ if (isset($_SESSION['user'])) {
     $result = $mysql->query("SELECT m.media, u.email FROM users as u 
                                 LEFT OUTER JOIN cars as c ON u.id = c.user_id  
                                 LEFT OUTER JOIN maintnances as m ON m.car_id = c.id
-                                WHERE u.email = '$x';");
+                                WHERE m.media IS NOT NULL AND u.email = '$x';");
 
     $result1 = $mysql->query("SELECT COUNT(m.media) FROM users as u 
-                                INNER JOIN cars as c ON u.id = c.user_id  
-                                INNER JOIN maintnances as m ON m.car_id = c.id
-                                WHERE u.email = '$x';");
+                                LEFT OUTER JOIN cars as c ON u.id = c.user_id  
+                                LEFT OUTER JOIN maintnances as m ON m.car_id = c.id
+                                WHERE m.media IS NOT NULL AND u.email = '$x';");
 
 
     $videoCount = strval($result1->fetch_row()[0]);
@@ -49,7 +49,7 @@ if (isset($_SESSION['user'])) {
             if ($result) {
                 foreach($result as $row) {
                     echo "<div class='object'>";
-                        echo "<iframe width='560' height='315'" . $row["media"] . "title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen></iframe>";
+                        echo "<iframe style='padding-top: 5px;' width='560' height='315'" . $row["media"] . "title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen></iframe>";
                     echo "</div>";
                     echo "<br>";
                 } 

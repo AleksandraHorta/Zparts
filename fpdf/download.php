@@ -1,6 +1,7 @@
 <?php
 	$conn = mysqli_connect("localhost", "root", "1program4*al", "zparts");
-	$sql = "SELECT * FROM `filespdf` WHERE `id` = " . $_GET["id"];
+
+	$sql = "SELECT * FROM `pdfiles` WHERE `id` = $_GET["id"] ";
 	$result = mysqli_query($conn, $sql);
 	if (mysqli_num_rows($result) == 0)
 	{

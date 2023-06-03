@@ -1,3 +1,21 @@
+<?php
+session_start();
+if (isset($_SESSION['user'])) {
+    
+    $mysql = new mysqli('localhost', 'root', '1program4*al', 'zparts');
+
+    $x = $_SESSION['user']['email'];
+
+    $result = $mysql->query("SELECT role FROM users 
+                                WHERE email = '$x';");
+
+    while ($row = $result->fetch_assoc()) {
+        $role = $row['role'];
+    }
+
+    if ($role == 'admin') {
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,12 +56,12 @@
         }
 
         table{
-            padding: 0px 0px 0px 320px;
+            padding: 0px 0px 0px 330px;
         }
 
 
         .search{
-            padding: 82px 10px 10px 15px;
+            padding: 82px 10px 2px 115px;
         }
 
         .block-left {
@@ -61,10 +79,14 @@
             position: fixed;
             right: 0;
             top: 0;
-            width: 22%;
+            width: 31%;
             height: 100%;
             background: #D3D3D3;
 
+        }
+
+        .block-right table {
+            padding: 0px 20px 0px 35px;
         }
 
 </style>
@@ -108,10 +130,10 @@
         if ($result = $mysql->query("SELECT * FROM users")) {
             $rowsCount = mysqli_num_rows($result);
             echo "<p>Total count of users in DB: $rowsCount</p>";
-            echo "<table><tr><th>ID</th><th>Name</th><th>Surname</th><th>Phone</th><th>Email</th><th>Terms</th><th>Role</th><th>Change role</th></tr>";
+            echo "<table><tr><th>Name</th><th>Surname</th><th>Phone</th><th>Email</th><th>Terms</th><th>Role</th><th>Change role</th></tr>";
             foreach ($result as $row) {
                 echo "<tr>";
-                    echo "<td>" . $row["id"] . "</td>";
+                    //echo "<td>" . $row["id"] . "</td>";
                     echo "<td>" . $row["name"] . "</td>";
                     echo "<td>" . $row["surname"] . "</td>";
                     echo "<td>" . $row["phone"] . "</td>";
@@ -119,7 +141,15 @@
                     //echo "<td>" . $row["password"] . "</td>";
                     echo "<td>" . $row["terms"] . "</td>";
                     echo "<td>" . $row["role"] . "</td>";
-                    echo "<td><label for='role'></label><select id='role'><option value='' selected disabled hidden>". $row["role"] ."</option><option value='user'>user</option><option value='admin'>admin</option></select></td>";
+                    echo "<td>
+                        <form method='post' action='../php/update_role.php'>
+                            <input type='hidden' name='user_id' value='" . $row["id"] . "'>
+                            <select name='role' onchange='this.form.submit()'>
+                                <option value='user' " . ($row["role"] == 'user' ? 'selected' : '') . ">user</option>
+                                <option value='admin' " . ($row["role"] == 'admin' ? 'selected' : '') . ">admin</option>
+                            </select>
+                        </form>
+                    </td>";
                 echo "</tr>";
             }
             echo "</table>";
@@ -129,7 +159,7 @@
         }
 
 
-        $mysql->close();
+        
 
         ?>
 
@@ -138,10 +168,64 @@
     <div class="block-right">
 
 
-        <form class="search" method="post" action="../php/search_user.php">
+        <form class="search" method="post" action="#"><!--../php/search_user.php-->
             <input name="search" type="text" class="search-input" placeholder="Search" name="search">
             <button type="submit" class="button">OK</button>
         </form>
+
+        <?php
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (isset($_POST['search'])) {
+                $search = $_POST['search'];
+                $search = trim($search); 
+                $search = htmlspecialchars($search);
+
+                if ($search == null){
+                    exit();
+                }
+                    
+
+                if ($result = $mysql->query("SELECT `id`, `name`, `surname`, `phone`, `email`, `role`
+                            FROM `users` WHERE `name` LIKE '%$search%'
+                            OR `surname` LIKE '%$search%' OR `phone` LIKE '%$search%'
+                            OR `email` LIKE '%$search%'")) {
+                    if (mysqli_num_rows($result) == 0) {
+                        echo "Nothing found";
+                        exit();
+                    }
+                    $rowsCount = mysqli_num_rows($result);
+                    echo "<p>Found: $rowsCount</p>";
+                    echo "<table><tr><th>Name</th><th>Surname</th><th>Phone</th><th>Email</th><th>Role</th></tr>";
+                    foreach ($result as $row) {
+                        echo "<tr>";
+                            //echo "<td>" . $row["id"] . "</td>";
+                            echo "<td>" . $row["name"] . "</td>";
+                            echo "<td>" . $row["surname"] . "</td>";
+                            echo "<td>" . $row["phone"] . "</td>";
+                            echo "<td>" . $row["email"] . "</td>";
+                            echo "<td>
+                                <form method='post' action='../php/update_role.php'>
+                                    <input type='hidden' name='user_id' value='" . $row["id"] . "'>
+                                    <select name='role' onchange='this.form.submit()'>
+                                        <option value='user' " . ($row["role"] == 'user' ? 'selected' : '') . ">user</option>
+                                        <option value='admin' " . ($row["role"] == 'admin' ? 'selected' : '') . ">admin</option>
+                                    </select>
+                                </form>
+                            </td>";
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                    mysqli_free_result($result);
+                } else {
+                    echo "Error: " . mysqli_error($mysql);
+                }
+            }
+        }
+
+        $mysql->close();
+
+        ?>
         
 
     </div>
@@ -150,4 +234,12 @@
 </body>
 </html>
 
+<?php
+} else {
+    echo "<div style='margin-top: 290px;'>";
+    echo "<h1 style='text-align: center; height: 50%';>Something went wrong! You don't have access to this page!</h1>";
+    echo "</div>";
+}
+}
+?>
 

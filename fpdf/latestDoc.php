@@ -73,7 +73,8 @@
         <div class="user_reg" style="text-align: center">
             <img src="../images/favicon.png" width="100" height="95">
         </div>
-        <a href="timetable.html">Timetable</a>
+        <a href="../timetable.html">Timetable</a>
+        <a href="../requests.php">Requests</a>
         <button class="dropdown-btn">DATABASES &#8595; </button>
         <div class="dropdown-container">
             <a onclick="location.href='../db/maintnancesBase.php';">Maintnance History</a>
@@ -105,20 +106,20 @@
             die("Error: " .mysqli_connect_error());
         }
 
-        if ($result = $mysql->query("SELECT w.id, w.file as wfile, i.file as ifile, w.date as wdate, i.date as idate FROM pdfinvoices as i INNER JOIN pdfworkorder as w ON i.id = w.id ORDER BY w.date DESC")) {
+        if ($result = $mysql->query("SELECT * FROM pdfiles ORDER BY date DESC")) {
             $rowsCount = mysqli_num_rows($result);
-            echo "<table><tr><th>ID</th><th>Work Order</th><th>Invoice</th><th>Work Order Date</th><th>Invoice Date</th></tr>";
+            echo "<form method='GET'>"; 
+            echo "<table><tr><th>ID</th><th>File</th><th>Date</th></tr>";
             foreach ($result as $row) {
                 echo "<tr>";
                     echo "<td>" . $row["id"] . "</td>";
-                    echo "<td>" . $row["wfile"] . "</td>";
-                    echo "<td>" . $row["ifile"] . "</td>";
-                    echo "<td>" . $row["wdate"] . "</td>";
-                    echo "<td>" . $row["idate"] . "</td>";
-                    echo "<td><button onclick='openDetails()' id='".$row['id']."' type='submit' value='".$row['id']."' name='details'> Details </button></td>"; 
+                    echo "<td>" . $row["file"] . "</td>";
+                    echo "<td>" . $row["date"] . "</td>";
+                    echo "<td><button id='".$row['id']."' type='submit' value='".$row['id']."' name='download'> Download </button></td>"; 
                 echo "</tr>";
             }
             echo "</table>";
+            echo "</form>"; 
             mysqli_free_result($result);
         } else {
             echo "Error: " . mysqli_error($mysql);

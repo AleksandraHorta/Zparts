@@ -1,3 +1,21 @@
+<?php
+session_start();
+if (isset($_SESSION['user'])) {
+    
+    $mysql = new mysqli('localhost', 'root', '1program4*al', 'zparts');
+
+    $x = $_SESSION['user']['email'];
+
+    $result = $mysql->query("SELECT role FROM users 
+                                WHERE email = '$x';");
+
+    while ($row = $result->fetch_assoc()) {
+        $role = $row['role'];
+    }
+
+    if ($role == 'admin') {
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -311,7 +329,7 @@
         }
     }
 
-    if(isset($_GET['update'])){
+    /*if(isset($_GET['update'])){
         $id = $_GET['update']
         $service = $_POST['serviceName'] ?? '';
         $hours = $_POST['hours'] ?? '';
@@ -319,7 +337,7 @@
         
         $mysql->query("UPDATE services SET serviceName = '$service', hours = '$hours', avgPrice = '$avgPrice' WHERE id = '$id';");
 
-    }
+    }*/
 
 
     if(isset($_GET['update'])){
@@ -435,3 +453,12 @@
 
 </script>
 </html>
+
+<?php
+} else {
+    echo "<div style='margin-top: 290px;'>";
+    echo "<h1 style='text-align: center; height: 50%';>Something went wrong! You don't have access to this page!</h1>";
+    echo "</div>";
+}
+}
+?>

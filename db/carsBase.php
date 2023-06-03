@@ -14,8 +14,8 @@ if (isset($_SESSION['user'])) {
     }
 
     if ($role == 'admin') {
+?>
 
-    ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -140,7 +140,7 @@ if (isset($_SESSION['user'])) {
                     echo "<td>" . $row["drive"] . "</td>";
                     echo "<td><button onclick='openDetails()' id='".$row['id']."' type='submit' value='".$row['id']."' name='details'> Details </button></td>"; 
                     echo "<td><button onclick='openUpdate()' id='".$row['id']."' type='submit' value='".$row['id']."' name='update'> Edit </button></td>"; 
-                    echo "<td><button type='submit' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
+                    //echo "<td><button type='submit' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
 
                 echo "</tr>";
             }
@@ -179,6 +179,4 @@ if (isset($_SESSION['user'])) {
     echo "</div>";
 }
 }
-
-
 ?>

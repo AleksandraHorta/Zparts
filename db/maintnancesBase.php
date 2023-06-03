@@ -1,9 +1,21 @@
 <?php
-$mysql = new mysqli('localhost', 'root', '1program4*al', 'zparts');
-if(!$mysql) {
-    die("Error: " .mysqli_connect_error());
-}
+session_start();
+if (isset($_SESSION['user'])) {
+    
+    $mysql = new mysqli('localhost', 'root', '1program4*al', 'zparts');
+
+    $x = $_SESSION['user']['email'];
+
+    $result = $mysql->query("SELECT role FROM users 
+                                WHERE email = '$x';");
+
+    while ($row = $result->fetch_assoc()) {
+        $role = $row['role'];
+    }
+
+    if ($role == 'admin') {
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -276,7 +288,7 @@ if(!$mysql) {
         <?php
             //}
 
-        if ($result = $mysql->query("SELECT m.id, s.serviceName, CONCAT(c.countryNumber, ', ', c.carBrand, '-', c.model, YEAR(c.regDate)) AS car, m.startDate, m.endDate, m.totalPrice
+        if ($result = $mysql->query("SELECT m.id, s.serviceName, CONCAT(c.countryNumber, ' ', c.carBrand, '-', c.model, ', ', YEAR(c.regDate)) AS car, m.startDate, m.endDate, m.totalPrice
                                         FROM maintnances as m
                                         INNER JOIN services as s
                                         ON s.id = m.service_id
@@ -285,7 +297,7 @@ if(!$mysql) {
             $rowsCount = mysqli_num_rows($result);
             echo "<form method='GET'>"; 
             echo "<p>Total count of maintnances in DB: $rowsCount</p>";
-            echo "<table><tr><th>ID</th><th>Service</th><th>Car</th><th>Start Date</th><th>End Date</th><th>TotalPrice</th></tr>";
+            echo "<table><tr><th>ID</th><th>Service</th><th>Car</th><th>Start Date</th><th>End Date</th><th>Total Price</th></tr>";
             foreach ($result as $row) {
                 echo "<tr>";
                     echo "<td>" . $row["id"] . "</td>";
@@ -294,8 +306,8 @@ if(!$mysql) {
                     echo "<td>" . $row["startDate"] . "</td>";
                     echo "<td>" . $row["endDate"] . "</td>";
                     echo "<td>" . $row["totalPrice"] . "</td>";
-                    echo "<td><button id='".$row['id']."' type='submit' value='".$row['id']."' name='details'> Details </button></td>"; 
-                    echo "<td><button id='".$row['id']."' type='submit' value='".$row['id']."' name='update'> Edit </button></td>"; 
+                    echo "<td><button type='submit' id='details' value='".$row['id']."' name='details'> Details </button></td>"; 
+                    echo "<td><button type='submit' id='update' value='".$row['id']."' name='update'> Edit </button></td>"; 
                     echo "<td><button type='submit' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
 
                 echo "</tr>";
@@ -352,7 +364,7 @@ if(!$mysql) {
             //}
             // WHERE `serviceName` LIKE '%$search%' OR `hours` LIKE '%$search%'"
 
-            if ($result = $mysql->query("SELECT m.id, s.serviceName, CONCAT(c.countryNumber, ', ', c.carBrand, '-', c.model, YEAR(c.regDate)) AS car, m.startDate, m.endDate, m.totalPrice
+            if ($result = $mysql->query("SELECT m.id, s.serviceName, CONCAT(c.countryNumber, ', ', c.carBrand, '-', c.model, ' ', YEAR(c.regDate)) AS car, m.startDate, m.endDate, m.totalPrice
                                         FROM maintnances as m
                                         INNER JOIN services as s
                                         ON s.id = m.service_id
@@ -393,10 +405,14 @@ if(!$mysql) {
     </div>
 
 
-
-
-
-
-
 </body>
 </html>
+
+<?php
+} else {
+    echo "<div style='margin-top: 290px;'>";
+    echo "<h1 style='text-align: center; height: 50%';>Something went wrong! You don't have access to this page!</h1>";
+    echo "</div>";
+}
+}
+?>
