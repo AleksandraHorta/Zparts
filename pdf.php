@@ -59,9 +59,9 @@
         <div class="dropdown-container">
             <a onclick="location.href='../db/maintnancesBase.php';">Maintnance History</a>
             <a onclick="location.href='../db/carsBase.php';">Cars</a>
-            <a href="db/usersBase.php">Users</a>
-            <a href="db/servicesBase.php">Our Services</a>
-            <a >Details</a>
+            <a onclick="location.href='../db/usersBase.php';">Users</a>
+            <a onclick="location.href='../db/servicesBase.php';">Our Services</a>
+            <a onclick="location.href='../db/detailsBase.php';">Details</a>
         </div>
         <a class="active" href="pdf.html">PDF</a>
         <!--<a href="statistics.html">Statistics</a>-->

@@ -106,7 +106,7 @@ if (isset($_SESSION['user'])) {
                 <a class="active" onclick="location.href='../db/carsBase.php';">Cars</a>
                 <a onclick="location.href='../db/usersBase.php';">Users</a>
                 <a onclick="location.href='../db/servicesBase.php';">Our Services</a>
-                <a href="#">Details</a>
+                <a onclick="location.href='../db/detailsBase.php';">Details</a>
             </div>
             <a href="../pdf.php">PDF</a>
             <!--<a href="statistics.html">Statistics</a>-->

@@ -70,7 +70,7 @@ if (isset($_SESSION['user'])) {
 
 
         .search{
-            padding: 35px 10px 10px 75px;
+            padding: 85px 10px 10px 75px;
         }
 
         .block-left {
@@ -95,7 +95,7 @@ if (isset($_SESSION['user'])) {
         }
 
         .block-right table {
-            padding: 0px 20px 0px 25px;
+            padding: 0px 20px 0px 55px;
         }
 
         .open-button {
@@ -223,7 +223,7 @@ if (isset($_SESSION['user'])) {
                     <a onclick="location.href='../db/carsBase.php';">Cars</a>
                     <a onclick="location.href='../db/usersBase.php';">Users</a>
                     <a class="active" onclick="location.href='../db/servicesBase.php';">Our Services</a>
-                    <a >Details</a>
+                    <a onclick="location.href='../db/detailsBase.php';">Details</a>
                 </div>
                 <a href="../pdf.php">PDF</a>
                 <!--<a href="statistics.html">Statistics</a>-->
@@ -263,7 +263,7 @@ if (isset($_SESSION['user'])) {
             $rowsCount = mysqli_num_rows($result);
             echo "<form method='GET'>"; 
             echo "<p>Total count of services in DB: $rowsCount</p>";
-            echo "<table><tr><th>ID</th><th>Service</th><th>Hours</th><th>Price</th></tr>";
+            echo "<table><tr><th>Code</th><th>Service</th><th>Hours</th><th>Price</th></tr>";
             foreach ($result as $row) {
                 echo "<tr>";
                     echo "<td>" . $row["id"] . "</td>";
@@ -307,9 +307,9 @@ if (isset($_SESSION['user'])) {
             
 ?>
             <div class="form-service3" id="detailsService">
-                <form action="" class="form-container">
+                <form action="#" class="form-container" method="GET">
 
-                    <label>ID: </label>
+                    <label>Code: </label>
                     <input type="text" id="id" name="id" value="<?php echo $row["id"] ?>" disabled>
 
                     <label>Service name: </label>
@@ -329,15 +329,15 @@ if (isset($_SESSION['user'])) {
         }
     }
 
-    /*if(isset($_GET['update'])){
-        $id = $_GET['update']
+    if(isset($_POST['update'])){
+        $id = $_GET['update'];
         $service = $_POST['serviceName'] ?? '';
         $hours = $_POST['hours'] ?? '';
         $avgPrice = $_POST['avgPrice'] ?? '';
         
         $mysql->query("UPDATE services SET serviceName = '$service', hours = '$hours', avgPrice = '$avgPrice' WHERE id = '$id';");
 
-    }*/
+    }
 
 
     if(isset($_GET['update'])){
@@ -352,7 +352,7 @@ if (isset($_SESSION['user'])) {
         <form action="#" method="post" class="form-container">
         
             <label>Service name: </label>
-            <input type="text" id="service" name="service" value="<?php echo $row["serviceName"] ?>">
+            <input type="text" id="serviceName" name="serviceName" value="<?php echo $row["serviceName"] ?>">
 
             <label>Hours: </label>
             <input type="number" id="hours" name="hours" value="<?php echo $row["hours"] ?>">

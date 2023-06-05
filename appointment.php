@@ -253,7 +253,7 @@
 
 
   <div class="container">
-    <form action="php/createAppointment.php" method="post" target="_blank">
+    <form action="php/createAppointment.php" method="post"> <!--target="_blank"-->
         <h1 style="text-align: center; color: white; padding-top: 30px; text-shadow: 0 2px 0 black;">Fill required fields</h1>
         <div class="box">
             <div id="service">
@@ -303,15 +303,12 @@
 
 
 
-
             <div class="box" >
             <div class="calendar-input" id="calendar-input">
                     <label for="date">Date: </label>
                     <input name="date" id="datepicker" type="text">
             </div>
             </div>
-
-
 
             <?php
 
@@ -322,16 +319,9 @@
 
 
                     for ($x = 0; $x <= $iCount; $x++) {
-
-
                         while ($row = $i->fetch_assoc()) {
-
                             $disabledIntervals[] = array("start" => $row['startDate'], "end" => $row['endDate']);
-                        }
-
-
-                        
-                            
+                        }   
                     }
         
                 // Convert the array/object to JSON format

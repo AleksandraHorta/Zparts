@@ -19,9 +19,19 @@ session_start();
     $car_id = $_POST['car'];
     $startDate = $_POST['date'];
 
+    $res = $mysql->query("SELECT hours FROM services WHERE id = '$service_id';");
+    $x = $res->fetch_row();
+    $hours = (int) $x[0];
 
-    $endDate = strtotime($startDate . ' +2 weeks');
-    $endDate = date('Y-m-d', $endDate);
+    if ($hours > 8) {
+        $days = ($hours / 8);
+        $endDate = strtotime($startDate . ' + '. $days . ' days');
+        $endDate = date('Y-m-d', $endDate);
+    } else if ($hours < 8) {
+        $endDate = $_POST['date'];
+    } else {
+        echo "Something went wrong!";
+    }
 
 
     $comments = $_POST['comments'];
@@ -51,6 +61,7 @@ session_start();
             header('Location: ../successPage.php');
         } else {
             echo '<h1 style="color: black;">Form submitted successfully, but there was an error sending the email.</h1>';
+            echo '<a style="color: black;" href="../appointment.php">Go back</a>';
         }
 
     

@@ -75,7 +75,7 @@ $mysql = new mysqli('localhost', 'root', '1program4*al', 'zparts');
             <a >Details</a>
         </div>
         <a class="active" href="pdf.html">PDF</a>
-        <a href="../statistics.html">Statistics</a>
+        <!--<a href="../statistics.html">Statistics</a>-->
         <button class="button" onclick="location.href='../php/exit.php';" id="log-out">LOG OUT</button>
     </div>
 

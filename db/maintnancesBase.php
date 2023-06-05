@@ -26,9 +26,7 @@ if (isset($_SESSION['user'])) {
     <title>Maintnances</title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.png">
     <style>
-        *{
-            font-family: 'Calibri';
-        }
+        
         body{
             font-family: 'Calibri';
         }
@@ -272,7 +270,7 @@ if (isset($_SESSION['user'])) {
                         <a onclick="location.href='../db/carsBase.php';">Cars</a>
                         <a onclick="location.href='../db/usersBase.php';">Users</a>
                         <a onclick="location.href='../db/servicesBase.php';">Our Services</a>
-                        <a href="#">Details</a>
+                        <a onclick="location.href='../db/detailsBase.php';">Details</a>
                     </div>
                     <a href="../pdf.php">PDF</a>
                     <!--<a href="statistics.html">Statistics</a>-->
@@ -297,7 +295,7 @@ if (isset($_SESSION['user'])) {
             $rowsCount = mysqli_num_rows($result);
             echo "<form method='GET'>"; 
             echo "<p>Total count of maintnances in DB: $rowsCount</p>";
-            echo "<table><tr><th>ID</th><th>Service</th><th>Car</th><th>Start Date</th><th>End Date</th><th>Total Price</th></tr>";
+            echo "<table><tr><th>Code</th><th>Service</th><th>Car</th><th>Start Date</th><th>End Date</th><th>Total Price</th></tr>";
             foreach ($result as $row) {
                 echo "<tr>";
                     echo "<td>" . $row["id"] . "</td>";
