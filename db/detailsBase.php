@@ -70,14 +70,14 @@ if (isset($_SESSION['user'])) {
 
 
         .search{
-            padding: 85px 10px 10px 75px;
+            padding: 85px 10px 10px 150px;
         }
 
         .block-left {
             position: fixed;
             left: 0;
             top: 0;
-            width: 72%;
+            width: 65%;
             height: 100%;
             background: white;
             overflow: auto;
@@ -88,7 +88,7 @@ if (isset($_SESSION['user'])) {
             position: fixed;
             right: 0;
             top: 0;
-            width: 28%;
+            width: 35%;
             height: 100%;
             background: #D3D3D3;
 
@@ -381,21 +381,24 @@ if (isset($_SESSION['user'])) {
                 exit();
             }
 
-                if ($result = $mysql->query("SELECT `id`, `serviceName`, `avgPrice`, `hours`
-                FROM `services` WHERE `serviceName` LIKE '%$search%'
-                OR `hours` LIKE '%$search%'")) {
+                if ($result = $mysql->query("SELECT `id`, `detailName`, `price`
+                FROM `details` WHERE `detailName` LIKE '%$search%'
+                OR `price` LIKE '%$search%'")) {
                 if (mysqli_num_rows($result) == 0) {
-                    echo "Nothing found";
+                    echo "<p1 style='padding-left: 150px;'>Nothing found!</p1>";
                     exit();
                 }
                 $rowsCount = mysqli_num_rows($result);
                 echo "<p>Found: $rowsCount</p>";
-                echo "<table><tr><th>ID</th><th>Service name</th><th>Hours</th></tr>";
+                echo "<table><tr><th>Code</th><th>Detail name</th><th>Price</th></tr>";
                 foreach ($result as $row) {
                     echo "<tr>";
                     echo "<td>" . $row["id"] . "</td>";
                     echo "<td>" . $row["detailName"] . "</td>";
                     echo "<td>" . $row["price"] . "</td>";
+                    echo "<td><button onclick='openDetails()' type='submit' id='details' value='".$row['id']."' name='details'> Details </button></td>"; 
+                    echo "<td><button type='submit' id='update' value='".$row['id']."' name='update'> Edit </button></td>"; 
+                    echo "<td><button type='submit' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
                 echo "</tr>";
                 }
                 echo "</table>";

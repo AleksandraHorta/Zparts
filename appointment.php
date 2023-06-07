@@ -204,6 +204,7 @@
             text-transform: uppercase;
             background-color: #2E64FE;
         }
+
         .buttonHolder{
             padding-top: 70px;
         }
@@ -221,6 +222,10 @@
 
         .box input .comments{
             height: 150px;
+        }
+
+        #comments{
+            height: 20px;
         }
 
     </style>
@@ -377,7 +382,7 @@
             <div class="box" >
                 <div id="comments">
                 <label>Comments: </label>
-                <input type="text" name="comments" placeholder="Comments">
+                <input type="text" name="comments" id="comments" placeholder="Comments">
                 </div>
             </div>
 

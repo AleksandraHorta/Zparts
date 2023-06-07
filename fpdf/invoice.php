@@ -70,7 +70,7 @@
             <a >Details</a>
         </div>
         <a class="active" href="pdf.html">PDF</a>
-        <a href="../statistics.html">Statistics</a>
+        
         <button class="button" onclick="location.href='../php/exit.php';" id="log-out">LOG OUT</button>
     </div>
 

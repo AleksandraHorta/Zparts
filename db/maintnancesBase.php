@@ -306,7 +306,7 @@ if (isset($_SESSION['user'])) {
                     echo "<td>" . $row["totalPrice"] . "</td>";
                     echo "<td><button type='submit' id='details' value='".$row['id']."' name='details'> Details </button></td>"; 
                     echo "<td><button type='submit' id='update' value='".$row['id']."' name='update'> Edit </button></td>"; 
-                    echo "<td><button type='submit' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
+                    echo "<td><button type='submit' onclick='return confirmDelete()' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
 
                 echo "</tr>";
             }
@@ -321,12 +321,16 @@ if (isset($_SESSION['user'])) {
         if(isset($_GET['delete'])){
             $deleted = $_GET['delete'];
             $mysql->query("DELETE FROM maintnances WHERE `id` = $deleted;");
-
+            echo "<script>window.location='http://zparts.local/db/maintnancesBase.php';</script>";
         }
 
-        //$mysql->close();
-
         ?>
+
+        <script>
+            function confirmDelete() {
+                return confirm("Are you sure you want to delete this maintenance record?");
+            }
+        </script>
 
     <!--</div>-->
 
@@ -359,8 +363,6 @@ if (isset($_SESSION['user'])) {
                     && $price == null && $notes == null) {
                 exit();
             }
-            //}
-            // WHERE `serviceName` LIKE '%$search%' OR `hours` LIKE '%$search%'"
 
             if ($result = $mysql->query("SELECT m.id, s.serviceName, CONCAT(c.countryNumber, ', ', c.carBrand, '-', c.model, ' ', YEAR(c.regDate)) AS car, m.startDate, m.endDate, m.totalPrice
                                         FROM maintnances as m
@@ -396,8 +398,9 @@ if (isset($_SESSION['user'])) {
         } else {
             echo "Error: " . mysqli_error($mysql);
         }
+        
         }
-
+        
 ?>
         
     </div>

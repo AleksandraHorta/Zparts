@@ -256,7 +256,7 @@ if (isset($_SESSION['user'])) {
                     echo "<td><button type='submit' id='accept' value='".$row['id']."' name='accept'> Accept </button></td>";
                     echo "<td><button type='submit' id='details' value='".$row['id']."' name='details'> Details </button></td>"; 
                     echo "<td><button type='submit' id='edit' value='".$row['id']."' name='edit'> Edit</button></td>"; 
-                    echo "<td><button type='submit' id='decline' value='".$row['id']."' name='decline'> Decline </button></td>";
+                    echo "<td><button type='submit' onclick='return confirmDecline()' id='decline' value='".$row['id']."' name='decline'> Decline </button></td>";
                 echo "</tr>";
             }
             echo "</table>";
@@ -274,6 +274,17 @@ if (isset($_SESSION['user'])) {
             $deleted = $_GET['decline'];
             $mysql->query("DELETE FROM requests WHERE `id` = $deleted;");
         }
+
+
+        ?>
+
+        <script>
+            function confirmDecline() {
+                return confirm("Are you sure you want to decline this request?");
+            }
+        </script>
+
+        <?php
         
 
         if(isset($_GET['accept'])){

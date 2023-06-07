@@ -101,13 +101,19 @@ if (isset($_SESSION['user'])) {
 
         .cardApp{
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-            width: 77%;
+            width: 70%;
         }
 
         .appointments{
           top: 50%;
           right: 50%;
         }
+
+        .nextweek{
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            padding-right: 58px;
+        }
+
 
       </style>
       
@@ -215,7 +221,6 @@ if (isset($_SESSION['user'])) {
           <h1>Today:</h1>
           <div class="appField">
           <?php
-          
           $today = new DateTime();
           $todayDate = $today->format('Y-m-d');
 
@@ -224,18 +229,20 @@ if (isset($_SESSION['user'])) {
                                           FROM requests as r
                                           INNER JOIN cars as c ON r.car_id = c.id
                                           INNER JOIN users as u ON r.user_id = u.id
-                                          WHERE r.startDate > '$todayDate' AND r.endDate < '$todayDate' AND r.confirmation = 1;")) {
-
+                                          WHERE r.startDate >= '$todayDate' AND r.confirmation = 1;")) {
               foreach($result1 as $row) {
+                echo "<br>";
                     echo "<form method='GET'>";
                     echo "<div class='cardApp'>";
                         echo "<div class='cont'>";
-                        echo "<h4><b>" . $row["car"] . "</b></h4>";
-                        echo "<p>" . $row["dates"] . "</p>";
-                        echo "<p>" . $row["user"] . "</p>";
+                        echo "<br>";
+                        echo "<h4 style='text-align: left;'><b>&nbsp;&nbsp;" . $row["car"] . "</b></h4>";
+                        echo "<br>";
+                        echo "<p style='text-align: left;'>&nbsp;&nbsp;" . $row["dates"] . "</p>";
+                        echo "<p style='text-align: left;'>&nbsp;&nbsp;" . $row["user"] . "</p>";
+                        echo "<br>";
                         echo "</div>";
-                    echo "</div>";
-                    echo "<br>";
+                    echo "</div>";    
               } 
               echo "</form>";
               mysqli_free_result($result1);
@@ -243,18 +250,125 @@ if (isset($_SESSION['user'])) {
             } else {
               echo "Error: " . mysqli_error($mysql);
             }
-              
           ?>
-        </div>
+          </div>
         </div>
         <div class="column">
           <h2 id="n2">Tomorrow:</h2>
+          <div class="appField">
+          <?php
+          $today = new DateTime();
+          $todayDate = $today->format('Y-m-d');
+
+          $todayDate = strtotime($todayDate . ' + 1 days');
+          $todayDate = date('Y-m-d', $todayDate);
+
+            echo "<div class='appointments'>";
+            if ($result2 = $mysql->query("SELECT CONCAT(countryNumber, ', ', carBrand, ' ', model) as car, CONCAT(r.startDate, ' - ' , r.endDate) as dates, CONCAT(name, ' ', surname, ' (', phone, ')') as user
+                                          FROM requests as r
+                                          INNER JOIN cars as c ON r.car_id = c.id
+                                          INNER JOIN users as u ON r.user_id = u.id
+                                          WHERE r.startDate >= '$todayDate' AND r.confirmation = 1;")) {
+              foreach($result2 as $row) {
+                echo "<br>";
+                    echo "<form method='GET'>";
+                    echo "<div class='cardApp'>";
+                        echo "<div class='cont'>";
+                        echo "<br>";
+                        echo "<h4 style='text-align: left;'><b>&nbsp;&nbsp;" . $row["car"] . "</b></h4>";
+                        echo "<br>";
+                        echo "<p style='text-align: left;'>&nbsp;&nbsp;" . $row["dates"] . "</p>";
+                        echo "<p style='text-align: left;'>&nbsp;&nbsp;" . $row["user"] . "</p>";
+                        echo "<br>";
+                        echo "</div>";
+                    echo "</div>";    
+              }
+              echo "</form>";
+              mysqli_free_result($result2);
+              echo "</div>"; 
+            } else {
+              echo "Error: " . mysqli_error($mysql);
+            }
+          ?>
+          </div>
         </div>
         <div class="column">
           <h3 id="n3">The day after Tomorrow:</h3>
+          <div class="appField">
+          <?php
+          $today = new DateTime();
+          $todayDate = $today->format('Y-m-d');
+
+          $todayDate = strtotime($todayDate . ' + 2 days');
+          $todayDate = date('Y-m-d', $todayDate);
+
+            echo "<div class='appointments'>";
+            if ($result2 = $mysql->query("SELECT CONCAT(countryNumber, ', ', carBrand, ' ', model) as car, CONCAT(r.startDate, ' - ' , r.endDate) as dates, CONCAT(name, ' ', surname, ' (', phone, ')') as user
+                                          FROM requests as r
+                                          INNER JOIN cars as c ON r.car_id = c.id
+                                          INNER JOIN users as u ON r.user_id = u.id
+                                          WHERE r.startDate >= '$todayDate' AND r.confirmation = 1;")) {
+              foreach($result2 as $row) {
+                echo "<br>";
+                    echo "<form method='GET'>";
+                    echo "<div class='cardApp'>";
+                        echo "<div class='cont'>";
+                        echo "<br>";
+                        echo "<h4 style='text-align: left;'><b>&nbsp;&nbsp;" . $row["car"] . "</b></h4>";
+                        echo "<br>";
+                        echo "<p style='text-align: left;'>&nbsp;&nbsp;" . $row["dates"] . "</p>";
+                        echo "<p style='text-align: left;'>&nbsp;&nbsp;" . $row["user"] . "</p>";
+                        echo "<br>";
+                        echo "</div>";
+                    echo "</div>";    
+              }
+              echo "</form>";
+              mysqli_free_result($result2);
+              echo "</div>"; 
+            } else {
+              echo "Error: " . mysqli_error($mysql);
+            }
+          ?>
+          </div>
         </div>
         <div class="column4">
           <h4>Next week:</h4>
+          <div class="appField">
+          <?php
+          $today = new DateTime();
+          $todayDate = $today->format('Y-m-d');
+
+          $todayDate = strtotime($todayDate . ' + 7 days');
+          $todayDate = date('Y-m-d', $todayDate);
+
+            echo "<div class='appointments'>";
+            if ($result2 = $mysql->query("SELECT CONCAT(countryNumber, ', ', carBrand, ' ', model) as car, CONCAT(r.startDate, ' - ' , r.endDate) as dates, CONCAT(name, ' ', surname, ' (', phone, ')') as user
+                                          FROM requests as r
+                                          INNER JOIN cars as c ON r.car_id = c.id
+                                          INNER JOIN users as u ON r.user_id = u.id
+                                          WHERE r.startDate >= '$todayDate' AND r.confirmation = 1;")) {
+              foreach($result2 as $row) {
+                echo "<br>";
+                    echo "<form method='GET'>";
+                    echo "<div class='nextweek'>";
+                        echo "<div class='cont'>";
+                        echo "<br>";
+                        echo "<h4 style='text-align: left;'><b>&nbsp;&nbsp;" . $row["car"] . "</b></h4>";
+                        echo "<br>";
+                        echo "<p style='text-align: left;'>&nbsp;&nbsp;" . $row["dates"] . "</p>";
+                        echo "<p style='text-align: left;'>&nbsp;&nbsp;" . $row["user"] . "</p>";
+                        echo "<br>";
+                        echo "</div>";
+                    echo "</div>";    
+              }
+              echo "</form>";
+              mysqli_free_result($result2);
+              echo "</div>"; 
+            } else {
+              echo "Error: " . mysqli_error($mysql);
+            }
+          ?>
+          </div>
         </div>
     </div>
 

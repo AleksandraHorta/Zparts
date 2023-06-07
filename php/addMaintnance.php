@@ -18,14 +18,16 @@ session_start();
         die("Connection failed: " . $conn->connect_error);
     }
 
-    if ($detail_id == '') {
+    if ($detail_id == null) {
         $mysql->query("INSERT INTO maintnances (service_id, car_id, media, startDate, mileage, endDate, totalPrice, notes) 
                     VALUES ('$service_id', '$car_id', '$media', '$start', '$mileage', '$endDate', '$price', '$notes')");
+    } else {
+        $mysql->query("INSERT INTO maintnances (service_id, detail_id, car_id, media, startDate, mileage, endDate, totalPrice, notes) 
+                    VALUES ('$service_id', '$detail_id', '$car_id', '$media', '$start', '$mileage', '$endDate', '$price', '$notes')");
     }
     
 
-    $mysql->query("INSERT INTO maintnances (service_id, detail_id, car_id, media, startDate, mileage, endDate, totalPrice, notes) 
-                    VALUES ('$service_id', '$detail_id', '$car_id', '$media', '$start', '$mileage', '$endDate', '$price', '$notes')");
+    
 
     header('Location: ../db/maintnancesBase.php');
 

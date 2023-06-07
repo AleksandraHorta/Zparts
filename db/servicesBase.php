@@ -272,7 +272,7 @@ if (isset($_SESSION['user'])) {
                     echo "<td>" . $row["avgPrice"] . "</td>";   // id='".$row['id']."'  // onclick='location.href='../php/details.php?id='".$row['id']."'
                     echo "<td><button onclick='openDetails()' type='submit' id='details' value='".$row['id']."' name='details'> Details </button></td>"; 
                     echo "<td><button type='submit' id='update' value='".$row['id']."' name='update'> Edit </button></td>"; 
-                    echo "<td><button type='submit' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
+                    echo "<td><button type='submit' onclick='return confirmDelete()' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
                 echo "</tr>";
             }/*onclick='location.href='../php/edit.php'    onclick='openUpdate()' */
             echo "</table>";
@@ -296,8 +296,17 @@ if (isset($_SESSION['user'])) {
         if(isset($_GET['delete'])){
             $deleted = $_GET['delete'];
             $mysql->query("DELETE FROM services WHERE `id` = $deleted;");
-
+            echo "<script>window.location='http://zparts.local/db/servicesBase.php';</script>";
         }
+
+        ?>
+        <script>
+            function confirmDelete() {
+                return confirm("Are you sure you want to delete this maintenance record?");
+            }
+        </script>
+
+        <?php
 
         if(isset($_GET['details'])){
             $selected = $_GET['details'];

@@ -24,7 +24,7 @@ session_start();
             left: 50%;
             transform: translate(-50%, -50%);
             margin: auto;
-            padding: 30px 60px 60px 35px;
+            padding: 30px 60px 30px 35px;
             text-align: center;
             font-size: 18px;
         }
@@ -47,6 +47,16 @@ session_start();
             margin-top: 70px;
             background-color: red;
         }
+
+        #notes{
+            height: 100px;
+            width: 350px;
+        }
+
+        .box input[type="text"]::placeholder{
+            vertical-align: top;
+        }
+
         
     </style>
 </head>
@@ -131,7 +141,7 @@ session_start();
                     </div>
 
                     <div class="box">
-                        <label>Notes: </label>
+                        <label id="notes">Notes: </label>
                         <input type="text" name="notes" id="notes" placeholder="Notes..." >
                     </div>
 
