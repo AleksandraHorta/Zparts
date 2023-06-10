@@ -239,7 +239,7 @@ if (isset($_SESSION['user'])) {
                                         INNER JOIN users as u ON r.user_id=u.id 
                                         INNER JOIN cars as c ON c.id=r.car_id 
                                         INNER JOIN services as s ON s.id=r.service_id 
-                                        WHERE confirmation = 0 ORDER BY r.startDate DESC ")) {
+                                        WHERE confirmation = 0 ORDER BY r.startDate ASC ")) {
             $rowsCount = mysqli_num_rows($result);
             if ($rowsCount != 0){
             echo "<form method='GET'>"; 
@@ -253,7 +253,7 @@ if (isset($_SESSION['user'])) {
                     echo "<td>" . $row["car"] . "</td>";
                     echo "<td>" . $row["serviceName"] . "</td>"; 
                     echo "<td>" . $row["comments"] . "</td>";
-                    echo "<td><button type='submit' id='accept' value='".$row['id']."' name='accept'> Accept </button></td>";
+                    echo "<td><button type='submit' onclick='return confirmAccept()' id='accept' value='".$row['id']."' name='accept'> Accept </button></td>";
                     echo "<td><button type='submit' id='details' value='".$row['id']."' name='details'> Details </button></td>"; 
                     echo "<td><button type='submit' id='edit' value='".$row['id']."' name='edit'> Edit</button></td>"; 
                     echo "<td><button type='submit' onclick='return confirmDecline()' id='decline' value='".$row['id']."' name='decline'> Decline </button></td>";
@@ -292,6 +292,15 @@ if (isset($_SESSION['user'])) {
             $mysql->query("UPDATE requests SET confirmation = 1 WHERE id = $accepted;"); 
             
         }
+        ?>
+
+        <script>
+            function confirmAccept() {
+                return confirm("Are you sure you want to accept this request?");
+            }
+        </script>
+
+        <?php
 
 
 

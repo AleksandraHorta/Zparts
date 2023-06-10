@@ -346,7 +346,7 @@ while ($row = $result->fetch_assoc()) {
                             echo "<div class='cont'>";
                             echo "<h4><b>" . $row["countryNumber"] . "</b></h4>";
                             echo "<p>" . $row["inf"] . "</p>";
-                            echo "&nbsp<button class='btndelete' type='submit' id='delete' value='".$row['id']."' name='delete'>Delete</button>";
+                            echo "&nbsp<button class='btndelete' type='submit' onclick='return confirmDelete()' id='delete' value='".$row['id']."' name='delete'>Delete</button>";
                             echo "</div>";
                         echo "</div>";
                         echo "<br>";
@@ -365,6 +365,12 @@ while ($row = $result->fetch_assoc()) {
             }
               
             ?>
+
+            <script>
+                function confirmDelete() {
+                    return confirm("Are you sure you want to delete this request?");
+                }
+            </script>
 
         </div>   
     

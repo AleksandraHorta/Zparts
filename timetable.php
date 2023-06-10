@@ -113,6 +113,9 @@ if (isset($_SESSION['user'])) {
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
             padding-right: 58px;
         }
+        .buttonHolder{
+          padding-top: 30px;
+        }
 
 
       </style>
@@ -138,7 +141,7 @@ if (isset($_SESSION['user'])) {
     <button class="dropdown-btn">DATABASES &#8595; </button>
     <div class="dropdown-container">
         <a onclick="location.href='../db/maintnancesBase.php';">Maintnance History</a>
-        <a href="#" onclick="carsBase()">Cars</a>
+        <a onclick="location.href='../db/carsBase.php';">Cars</a>
         <a onclick="location.href='../db/usersBase.php';">Users</a>
         <a onclick="location.href='../db/servicesBase.php';">Our Services</a>
         <a onclick="location.href='../db/detailsBase.php';">Details</a>
@@ -157,7 +160,7 @@ if (isset($_SESSION['user'])) {
 
   <div class="block-right">
 
-    <div class="calendar" id="calendar"></div>
+    <div class="calendar" id="calendar-r"></div>
 
             <?php
 
@@ -183,7 +186,7 @@ if (isset($_SESSION['user'])) {
 
     <script>
             $(document).ready(function() {
-            $("#calendar").datepicker({
+            $("#calendar-r").datepicker({
                 dateFormat: "yy-mm-dd",
                 beforeShowDay: function(date) {
 
@@ -225,11 +228,12 @@ if (isset($_SESSION['user'])) {
           $todayDate = $today->format('Y-m-d');
 
             echo "<div class='appointments'>";
-            if ($result1 = $mysql->query("SELECT CONCAT(countryNumber, ', ', carBrand, ' ', model) as car, CONCAT(r.startDate, ' - ' , r.endDate) as dates, CONCAT(name, ' ', surname, ' (', phone, ')') as user
+            if ($result1 = $mysql->query("SELECT CONCAT(countryNumber, ', ', carBrand, ' ', model) as car, CONCAT(r.startDate, ' - ' , r.endDate) as dates, CONCAT(name, ' ', surname, ' (', phone, ')') as user, s.serviceName
                                           FROM requests as r
                                           INNER JOIN cars as c ON r.car_id = c.id
                                           INNER JOIN users as u ON r.user_id = u.id
-                                          WHERE r.startDate >= '$todayDate' AND r.confirmation = 1;")) {
+                                          INNER JOIN services as s ON s.id = r.service_id
+                                          WHERE r.startDate <= '$todayDate' AND r.confirmation = 1 AND r.car_id IS NOT NULL;")) {
               foreach($result1 as $row) {
                 echo "<br>";
                     echo "<form method='GET'>";
@@ -238,6 +242,7 @@ if (isset($_SESSION['user'])) {
                         echo "<br>";
                         echo "<h4 style='text-align: left;'><b>&nbsp;&nbsp;" . $row["car"] . "</b></h4>";
                         echo "<br>";
+                        echo "<p style='text-align: left;'><b>&nbsp;&nbsp;" . $row["serviceName"] . "</b></p>";
                         echo "<p style='text-align: left;'>&nbsp;&nbsp;" . $row["dates"] . "</p>";
                         echo "<p style='text-align: left;'>&nbsp;&nbsp;" . $row["user"] . "</p>";
                         echo "<br>";
@@ -264,11 +269,12 @@ if (isset($_SESSION['user'])) {
           $todayDate = date('Y-m-d', $todayDate);
 
             echo "<div class='appointments'>";
-            if ($result2 = $mysql->query("SELECT CONCAT(countryNumber, ', ', carBrand, ' ', model) as car, CONCAT(r.startDate, ' - ' , r.endDate) as dates, CONCAT(name, ' ', surname, ' (', phone, ')') as user
+            if ($result2 = $mysql->query("SELECT CONCAT(countryNumber, ', ', carBrand, ' ', model) as car, CONCAT(r.startDate, ' - ' , r.endDate) as dates, CONCAT(name, ' ', surname, ' (', phone, ')') as user, s.serviceName
                                           FROM requests as r
                                           INNER JOIN cars as c ON r.car_id = c.id
                                           INNER JOIN users as u ON r.user_id = u.id
-                                          WHERE r.startDate >= '$todayDate' AND r.confirmation = 1;")) {
+                                          INNER JOIN services as s ON s.id = r.service_id
+                                          WHERE r.startDate <= '$todayDate' AND r.confirmation = 1 AND r.car_id IS NOT NULL;")) {
               foreach($result2 as $row) {
                 echo "<br>";
                     echo "<form method='GET'>";
@@ -277,6 +283,7 @@ if (isset($_SESSION['user'])) {
                         echo "<br>";
                         echo "<h4 style='text-align: left;'><b>&nbsp;&nbsp;" . $row["car"] . "</b></h4>";
                         echo "<br>";
+                        echo "<p style='text-align: left;'><b>&nbsp;&nbsp;" . $row["serviceName"] . "</b></p>";
                         echo "<p style='text-align: left;'>&nbsp;&nbsp;" . $row["dates"] . "</p>";
                         echo "<p style='text-align: left;'>&nbsp;&nbsp;" . $row["user"] . "</p>";
                         echo "<br>";
@@ -303,11 +310,12 @@ if (isset($_SESSION['user'])) {
           $todayDate = date('Y-m-d', $todayDate);
 
             echo "<div class='appointments'>";
-            if ($result2 = $mysql->query("SELECT CONCAT(countryNumber, ', ', carBrand, ' ', model) as car, CONCAT(r.startDate, ' - ' , r.endDate) as dates, CONCAT(name, ' ', surname, ' (', phone, ')') as user
+            if ($result2 = $mysql->query("SELECT CONCAT(countryNumber, ', ', carBrand, ' ', model) as car, CONCAT(r.startDate, ' - ' , r.endDate) as dates, CONCAT(name, ' ', surname, ' (', phone, ')') as user, s.serviceName
                                           FROM requests as r
                                           INNER JOIN cars as c ON r.car_id = c.id
                                           INNER JOIN users as u ON r.user_id = u.id
-                                          WHERE r.startDate >= '$todayDate' AND r.confirmation = 1;")) {
+                                          INNER JOIN services as s ON s.id = r.service_id
+                                          WHERE r.startDate <= '$todayDate' AND r.confirmation = 1 AND r.car_id IS NOT NULL;")) {
               foreach($result2 as $row) {
                 echo "<br>";
                     echo "<form method='GET'>";
@@ -316,6 +324,7 @@ if (isset($_SESSION['user'])) {
                         echo "<br>";
                         echo "<h4 style='text-align: left;'><b>&nbsp;&nbsp;" . $row["car"] . "</b></h4>";
                         echo "<br>";
+                        echo "<p style='text-align: left;'><b>&nbsp;&nbsp;" . $row["serviceName"] . "</b></p>";
                         echo "<p style='text-align: left;'>&nbsp;&nbsp;" . $row["dates"] . "</p>";
                         echo "<p style='text-align: left;'>&nbsp;&nbsp;" . $row["user"] . "</p>";
                         echo "<br>";
@@ -331,10 +340,15 @@ if (isset($_SESSION['user'])) {
           ?>
           </div>
         </div>
-        <div class="column4">
+
+
+
+
+        <!--<div class="column4">
           <h4>Next week:</h4>
-          <div class="appField">
+          <div class="appField">-->
           <?php
+          /*
           $today = new DateTime();
           $todayDate = $today->format('Y-m-d');
 
@@ -342,10 +356,11 @@ if (isset($_SESSION['user'])) {
           $todayDate = date('Y-m-d', $todayDate);
 
             echo "<div class='appointments'>";
-            if ($result2 = $mysql->query("SELECT CONCAT(countryNumber, ', ', carBrand, ' ', model) as car, CONCAT(r.startDate, ' - ' , r.endDate) as dates, CONCAT(name, ' ', surname, ' (', phone, ')') as user
+            if ($result2 = $mysql->query("SELECT CONCAT(countryNumber, ', ', carBrand, ' ', model) as car, CONCAT(r.startDate, ' - ' , r.endDate) as dates, CONCAT(name, ' ', surname, ' (', phone, ')') as user, s.serviceName
                                           FROM requests as r
                                           INNER JOIN cars as c ON r.car_id = c.id
                                           INNER JOIN users as u ON r.user_id = u.id
+                                          INNER JOIN services as s ON s.id = r.service_id
                                           WHERE r.startDate >= '$todayDate' AND r.confirmation = 1;")) {
               foreach($result2 as $row) {
                 echo "<br>";
@@ -355,6 +370,7 @@ if (isset($_SESSION['user'])) {
                         echo "<br>";
                         echo "<h4 style='text-align: left;'><b>&nbsp;&nbsp;" . $row["car"] . "</b></h4>";
                         echo "<br>";
+                        echo "<p style='text-align: left;'><b>&nbsp;&nbsp;" . $row["serviceName"] . "</b></p>";
                         echo "<p style='text-align: left;'>&nbsp;&nbsp;" . $row["dates"] . "</p>";
                         echo "<p style='text-align: left;'>&nbsp;&nbsp;" . $row["user"] . "</p>";
                         echo "<br>";
@@ -367,14 +383,81 @@ if (isset($_SESSION['user'])) {
             } else {
               echo "Error: " . mysqli_error($mysql);
             }
+            */
           ?>
-          </div>
+          <!--</div>
         </div>
-    </div>
-
+    </div>-->
 
     
+    <div class="column4">
+      <form action="php/disableDate.php" method="post">
+        <p>Disable dates: </p>
+        <br>
+        <div class="calendar-input" id="calendar-input">
+            <label for="date">Date: </label>
+            <input name="date" id="datepicker" type="text">
+        </div>
 
+    <?php
+
+                $disabledIntervals = array();
+
+                $i = $mysql->query("SELECT id, startDate, endDate FROM requests");
+                
+                $res = $mysql->query("SELECT COUNT(id) FROM requests");
+                $iCount = strval($res->fetch_row()[0]);
+
+                    for ($x = 0; $x <= $iCount; $x++) {
+                        while ($row = $i->fetch_assoc()) {
+                            $disabledIntervals[] = array("start" => $row['startDate'], "end" => $row['endDate']);
+                        }   
+                    }
+        
+                // Convert the array/object to JSON format
+                $disabledIntervalsJSON = json_encode($disabledIntervals);
+
+                // Echo the JSON data
+                echo '<script>var disabledIntervals = ' . $disabledIntervalsJSON . ';</script>';
+            ?>
+
+            <script>
+                $(document).ready(function() {
+                $("#datepicker").datepicker({
+                    dateFormat: "yy-mm-dd",
+                    beforeShowDay: function(date) {
+
+                        var day = date.getDay();
+                        if (day === 0 || day === 6) {
+                            return [false];
+                        }
+
+                        var string = $.datepicker.formatDate('yy-mm-dd', date);  //jQuery.datapicker.formatDate
+                        
+                        for (var i = 0; i < disabledIntervals.length; i++) {
+                            var startDate = new Date(disabledIntervals[i].start);
+                            var endDate = new Date(disabledIntervals[i].end);
+
+                            if (date >= startDate && date <= endDate) {
+                              return [false];
+                            }
+                        }
+                        return [true];
+                    },
+                    //beforeShowDay: $.datepicker.noWeekends,
+                    defaultDate: "today",
+                    firstDay: 1,
+                    minDate: 0
+                });
+                });
+            </script>
+
+            <div class="buttonHolder" style="text-align: center">
+                <button type="submit" class="button"> SUBMIT </button>
+            </div>
+
+            </form>
+    </div>
 
     
   </div>

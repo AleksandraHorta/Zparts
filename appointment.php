@@ -174,7 +174,7 @@
         }
 
         .calendar-input input{
-            width: 248px;
+            width: 238px;
             height: 39px;
             font-size: 15px;
         }
@@ -218,15 +218,8 @@
         .ui-datepicker-unselectable.ui-state-disabled span {
             background-color: #FE642F;
             color: black;
-        }
+        } 
 
-        .box input .comments{
-            height: 150px;
-        }
-
-        #comments{
-            height: 20px;
-        }
 
     </style>
 
@@ -372,17 +365,12 @@
                 });
             </script>
 
-            
-                            
-
-            
-
 
 
             <div class="box" >
                 <div id="comments">
                 <label>Comments: </label>
-                <input type="text" name="comments" id="comments" placeholder="Comments">
+                <input type="text" name="comments" placeholder="Comments">
                 </div>
             </div>
 

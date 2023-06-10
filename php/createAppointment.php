@@ -48,12 +48,10 @@ session_start();
                     VALUES ('$user_id','$service_id', '$car_id', '$startDate', '$endDate', 0, '$comments');");
 
 
-
-
-        $to = 'aleksandra.horta@gmail.com';
-        $subject = 'Form Submission Success';
-        $message = 'The form submission was successful.';
-        $headers = 'From: aleksandra.horta@gmail.com';  //info@zparts.lv
+        $to = 'localhost.' $x; //aleksandra.horta@gmail.com
+        $subject = 'Request';
+        $message = 'Request was created successfully!';
+        $headers = 'From: info@zparts.lv';  //info@zparts.lv
 
         $mailSent = mail($to, $subject, $message, $headers);
 
@@ -63,8 +61,6 @@ session_start();
             echo '<h1 style="color: black;">Form submitted successfully, but there was an error sending the email.</h1>';
             echo '<a style="color: black;" href="../appointment.php">Go back</a>';
         }
-
-    
 
     $mysql->close();
 
