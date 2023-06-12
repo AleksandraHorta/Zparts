@@ -124,16 +124,16 @@ if (isset($_SESSION['user'])) {
         .form-service2 {
             display: block; /*Hide by default*/
             position: absolute;
-            bottom: 185px;
-            right: 290px;
+            bottom: 155px;
+            right: 190px;
             border: 2px solid #c0c0c0;
         }
 
         .form-service3 {
             display: block; /*Hide by default*/
             position: absolute;
-            bottom: 185px;
-            right: 290px;
+            bottom: 155px;
+            right: 190px;
             border: 2px solid #c0c0c0;
         }
 
@@ -232,7 +232,7 @@ if (isset($_SESSION['user'])) {
 
         <button class="open-button" onclick="openAdd()">Add new Detail</button>
 
-        <div class="form-service" id="addService">
+        <div class="form-service" id="addDetail">
             <form action="../php/details.php" method="post" class="form-container">
                 <label>Detail name: </label>
                 <input type="text" placeholder="Detail" name="detail" required>
@@ -305,7 +305,7 @@ if (isset($_SESSION['user'])) {
             foreach($res as $row) {
             
 ?>
-            <div class="form-service3" id="detailsService">
+            <div class="form-service3" id="detailsLog">
                 <form action="#" class="form-container" method="GET">
 
                     <label>ID: </label>
@@ -337,23 +337,20 @@ if (isset($_SESSION['user'])) {
 
     if(isset($_GET['update'])){
         $updated = $_GET['update'];
-        $result = $mysql->query("SELECT * FROM services WHERE id = $updated");
+        $result = $mysql->query("SELECT * FROM details WHERE id = $updated");
 
         foreach($result as $row) {
             
     ?>
 
-        <div class="form-service2" id="updateService">
+        <div class="form-service2" id="updateDetail">
         <form action="#" method="post" class="form-container">
         
-            <label>Service name: </label>
-            <input type="text" id="serviceName" name="serviceName" value="<?php echo $row["serviceName"] ?>">
+            <label>Detail name: </label>
+            <input type="text" id="detailName" name="detailName" value="<?php echo $row["detailName"] ?>">
 
-            <label>Hours: </label>
-            <input type="number" id="hours" name="hours" value="<?php echo $row["hours"] ?>">
-
-            <label>Average price: </label>
-            <input type="number" min="1.00" max="10000.00" step="0.10" id="avgPrice" name="avgPrice" value="<?php echo $row["avgPrice"] ?>">
+            <label>Price: </label>
+            <input type="number" id="price" name="price" value="<?php echo $row["price"] ?>">
 
             <button type="submit" name="update" class="btn">Update</button>
             <button type="button" class="btn cancel" onclick="closeUpdate()">Close</button>
@@ -440,27 +437,27 @@ if (isset($_SESSION['user'])) {
 <script>
 
     function openAdd() {
-        document.getElementById("addService").style.display = "block";
+        document.getElementById("addDetail").style.display = "block";
     }
 
     function closeAdd() {
-        document.getElementById("addService").style.display = "none";
+        document.getElementById("addDetail").style.display = "none";
     }
 
     function openUpdate() {
-        document.getElementById("updateService").style.display = "block";
+        document.getElementById("updateDetail").style.display = "block";
     }
 
     function closeUpdate() {
-        document.getElementById("updateService").style.display = "none";
+        document.getElementById("updateDetail").style.display = "none";
     }
 
     function openDetails() {
-        document.getElementById("detailsService").style.display = "block";
+        document.getElementById("detailsLog").style.display = "block";
     }
 
     function closeDetails() {
-        document.getElementById("detailsService").style.display = "none";
+        document.getElementById("detailsLog").style.display = "none";
     }
 
 </script>

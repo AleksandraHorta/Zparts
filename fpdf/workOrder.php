@@ -65,14 +65,15 @@ $mysql = new mysqli('localhost', 'root', '1program4*al', 'zparts');
         <div class="user_reg" style="text-align: center">
             <img src="../images/favicon.png" width="100" height="95">
         </div>
-        <a href="timetable.php">Timetable</a>
+        <a href="../timetable.php">Timetable</a>
+        <a href="../requests.php">Requests</a>
         <button class="dropdown-btn">DATABASES &#8595; </button>
         <div class="dropdown-container">
             <a onclick="location.href='../db/maintnancesBase.php';">Maintnance History</a>
-            <a href="#" onclick="carsBase()">Cars</a>
-            <a href="../db/usersBase.php">Users</a>
-            <a href="../db/servicesBase.php">Our Services</a>
-            <a >Details</a>
+            <a onclick="location.href='../db/carsBase.php';">Cars</a>
+            <a onclick="location.href='../db/usersBase.php';">Users</a>
+            <a onclick="location.href='../db/servicesBase.php';">Our Services</a>
+            <a onclick="location.href='../db/detailsBase.php';">Details</a>
         </div>
         <a class="active" href="pdf.html">PDF</a>
         <!--<a href="../statistics.html">Statistics</a>-->

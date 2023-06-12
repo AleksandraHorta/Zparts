@@ -189,6 +189,49 @@ if (isset($_SESSION['user'])) {
             background-color: #2E64FE;
         }
 
+        .form-service3 {
+            display: block; /*Hide by default*/
+            position: absolute;
+            bottom: 60px;
+            right: 250px;
+            border: 2px solid #c0c0c0;
+        }
+
+        .form-container {
+            max-width: 380px;
+            padding: 20px 20px;
+            background-color: white;
+        }
+
+        .form-container input[type=text], .form-container input[type= number] {
+            width: 89%;
+            padding: 10px;
+            margin: 5px 0 12px 0;
+            border: none;
+            background: #f1f1f1;
+        }
+
+        .form-container .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px;
+            border: none;
+            cursor: pointer;
+            width: 60%;
+            margin-bottom: 7px;
+            opacity: 1;
+	        font-size: 15px;
+            margin-left: 58px;
+        }
+
+        .form-container .cancel {
+            background-color: red;
+        }
+
+        .form-container .btn:hover, .open-button:hover {
+            opacity: 0.85;  /*On cursor effect*/
+        }
+
 
 </style>
 </head>
@@ -293,7 +336,7 @@ if (isset($_SESSION['user'])) {
                                         INNER JOIN cars as c
                                         ON c.id = m.car_id;")) {
             $rowsCount = mysqli_num_rows($result);
-            echo "<form method='GET'>"; 
+            echo "<form method='GET' action='../php/editMaintnance.php'>"; 
             echo "<p>Total count of maintnances in DB: $rowsCount</p>";
             echo "<table><tr><th>Code</th><th>Service</th><th>Car</th><th>Start Date</th><th>End Date</th><th>Total Price</th></tr>";
             foreach ($result as $row) {
@@ -304,10 +347,9 @@ if (isset($_SESSION['user'])) {
                     echo "<td>" . $row["startDate"] . "</td>";
                     echo "<td>" . $row["endDate"] . "</td>";
                     echo "<td>" . $row["totalPrice"] . "</td>";
-                    echo "<td><button type='submit' id='details' value='".$row['id']."' name='details'> Details </button></td>"; 
+                    echo "<td><button onclick='openDetails()' type='submit' id='details' value='".$row['id']."' name='details'> Details </button></td>"; 
                     echo "<td><button type='submit' id='update' value='".$row['id']."' name='update'> Edit </button></td>"; 
                     echo "<td><button type='submit' onclick='return confirmDelete()' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
-
                 echo "</tr>";
             }
             echo "</table>";
@@ -316,6 +358,58 @@ if (isset($_SESSION['user'])) {
         } else {
             echo "Error: " . mysqli_error($mysql);
         }
+
+
+        if(isset($_GET['details'])){
+            $selected = $_GET['details'];
+            $res = $mysql->query("SELECT *, CONCAT(c.countryNumber, ',  ', c.carBrand, ' ', c.model, ' (', YEAR(c.regDate), ')') AS car 
+                                    FROM maintnances as m 
+                                    INNER JOIN services as s 
+                                    ON m.service_id = s.id 
+                                    INNER JOIN cars as c
+                                    ON c.id = m.car_id
+                                    WHERE m.id = $selected;");
+
+            foreach($res as $row) {
+            
+        ?>
+            <div class="form-service3" id="MDetails">
+                <form action="#" class="form-container" method="GET">
+
+                    <label>Number: </label>
+                    <input type="number" id="id" name="id" value="<?php echo $row["id"] ?>" disabled>
+
+                    <label>Service name: </label>
+                    <input type="text" id="serviceName" name="serviceName" value="<?php echo $row["serviceName"] ?>" disabled>
+
+                    <label>Car: </label>
+                    <input type="text" id="car" name="car" value="<?php echo $row["car"] ?>" disabled>
+
+                    <label>Start date: </label>
+                    <input type="date" id="startDate" name="startDate" value="<?php echo $row["startDate"] ?>" disabled>
+                    <br><br>
+                    <label>End date: </label>
+                    <input type="date" id="endDate" name="endDate" value="<?php echo $row["endDate"] ?>" disabled>
+                    <br><br>
+                    <label>Total price: </label>
+                    <input type="number" min="1.00" max="10000.00" step="0.10" id="totalPrice" name="totalPrice" value="<?php echo $row["totalPrice"] ?>" disabled>
+
+                    <label>Mileage: </label>
+                    <input type="number" id="mileage" name="mileage" value="<?php echo $row["mileage"] ?>" disabled>
+
+                    <label>Notes: </label>
+                    <input type="text" id="notes" name="notes" value="<?php echo $row["notes"] ?>" disabled>
+
+                    <button type="button" class="btn cancel" onclick="closeDetails()">Close</button>
+                </form>
+            </div>
+
+        <?php    
+            }
+    }
+
+
+
 
 
         if(isset($_GET['delete'])){
@@ -388,8 +482,8 @@ if (isset($_SESSION['user'])) {
                 echo "<td>" . $row["startDate"] . "</td>";
                 echo "<td>" . $row["endDate"] . "</td>";
                 echo "<td>" . $row["totalPrice"] . "</td>";
-                echo "<td><button onclick='openDetails()' id='".$row['id']."' type='submit' value='".$row['id']."' name='details'> Details </button></td>"; 
-                echo "<td><button onclick='openUpdate()' id='".$row['id']."' type='submit' value='".$row['id']."' name='update'> Edit </button></td>"; 
+                echo "<td><button onclick='openDetails()' id='details' type='submit' value='".$row['id']."' name='details'> Details </button></td>"; 
+                echo "<td><button id='update' type='submit' value='".$row['id']."' name='update'> Edit </button></td>"; 
                 echo "<td><button type='submit' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
                 echo "</tr>";
             }
@@ -398,6 +492,7 @@ if (isset($_SESSION['user'])) {
         } else {
             echo "Error: " . mysqli_error($mysql);
         }
+
         
         }
         
@@ -407,6 +502,15 @@ if (isset($_SESSION['user'])) {
 
 
 </body>
+<script>
+    function openDetails() {
+        document.getElementById("MDetails").style.display = "block";
+    }
+
+    function closeDetails() {
+        document.getElementById("MDetails").style.display = "none";
+    }
+</script>
 </html>
 
 <?php

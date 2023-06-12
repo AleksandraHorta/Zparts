@@ -101,8 +101,8 @@ if (isset($_SESSION['user'])) {
         .form-service3 {
             display: block; /*Hide by default*/
             position: absolute;
-            bottom: 185px;
-            right: 290px;
+            bottom: 55px;
+            right: 180px;
             border: 2px solid #c0c0c0;
         }
 
@@ -114,8 +114,8 @@ if (isset($_SESSION['user'])) {
 
         .form-container input[type=text], .form-container input[type= number] {
             width: 89%;
-            padding: 15px;
-            margin: 5px 0 22px 0;
+            padding: 8px;
+            margin: 3px 0 15px 0;
             border: none;
             background: #f1f1f1;
         }
@@ -177,7 +177,7 @@ if (isset($_SESSION['user'])) {
             die("Error: " .mysqli_connect_error());
         }
 
-        if ($result = $mysql->query("SELECT *, CONCAT(u.name, ' ', u.surname, ' (', u.phone, ')') as person, engine FROM cars as c
+        if ($result = $mysql->query("SELECT *, c.id AS car_id, CONCAT(u.name, ' ', u.surname, ' (', u.phone, ')') as person, engine FROM cars as c
                                         INNER JOIN users as u ON u.id = c.user_id;")) {
             $rowsCount = mysqli_num_rows($result);
             echo "<form method='GET'>"; 
@@ -192,7 +192,7 @@ if (isset($_SESSION['user'])) {
                     echo "<td>" . $row["regDate"] . "</td>";
                     echo "<td>" . $row["engine"] . "</td>";
                     echo "<td>" . $row["drive"] . "</td>";
-                    echo "<td><button onclick='openDetails()' type='submit' id='details' value='".$row['id']."' name='details'> Details </button></td>"; 
+                    echo "<td><button onclick='openDetails()' type='submit' id='details' value='".$row['car_id']."' name='details'> Details </button></td>"; 
                     //echo "<td><button onclick='openUpdate()' id='".$row['id']."' type='submit' value='".$row['id']."' name='update'> Edit </button></td>"; 
                     //echo "<td><button type='submit' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
                 echo "</tr>";
@@ -204,7 +204,6 @@ if (isset($_SESSION['user'])) {
             echo "Error: " . mysqli_error($mysql);
         }
 
-        //$mysql->close();
 
         if(isset($_GET['details'])){
             $selected = $_GET['details'];
@@ -282,7 +281,7 @@ if (isset($_SESSION['user'])) {
                     echo "<p1 style='padding-left: 150px;'>Nothing found!</p1>";
                     exit();
                 }
-                $rowsCount = mysqli_num_rows($result);
+                echo "<form method='GET'>";
                 echo "<table><tr><th>Country Number</th><th>Brand & Model</th><th>Registration Date</th><th>Engine</th><th>Transmission</th></tr>";
                 foreach ($result as $row) {
                     echo "<tr>";
@@ -298,6 +297,7 @@ if (isset($_SESSION['user'])) {
                     echo "</tr>";
                 }
                 echo "</table>";
+                echo "</form>";
                 mysqli_free_result($result);
             } else {
                 echo "Error: " . mysqli_error($mysql);

@@ -115,9 +115,9 @@
     $pdf->SetFont('DejaVu', '', 9);
     $pdf->Line(20,99,190,99); // 2nd and 4th is height of start and end points
     $pdf->Ln(13);
-    $pdf->Cell(0, 25, '               Kods                    Klienta sūdzības / pieprasījums', 0);
+    $pdf->Cell(0, 25, '                  Klienta sūdzības / pieprasījums', 0);
     $pdf->Ln(1);
-    $pdf->Cell(0, 25, "                                   $service", 0);
+    $pdf->Cell(0, 38, "                  $service", 0);
     $pdf->Line(20,109,190,109);
     $pdf->Ln(15);
     $pdf->Line(20,115,190,115);
