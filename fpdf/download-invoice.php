@@ -127,26 +127,7 @@
 
     $pdf->Ln(35);
 
-    $pdf->SetFont('DejaVu', '', 8);
-    $pdf->Cell(0, 12, 'KLIENTU IEVĒRĪBAI', 0, 0, 'C');
-    $pdf->Ln(11);
-    $pdf->Write(2, '         1. "ZPARTS.LV" SIA neuzņemas atbildību par automobili atstātām klientu mantām.');
-    $pdf->Ln(4);
-    $pdf->Write(2, '         2. Par klienta neuzrādītajiem automobila defektiem un to izraisītajām sekām "ZPARTS.LV SIA atbildību neuzņemas.');
-    $pdf->Ln(4);
-    $pdf->Write(2, '         3. Ja darbu veikšanai tiek izmantotas klientu piegādātas detaļas, garantija netiek dota.');
-    $pdf->Ln(4);
-    $pdf->Write(2, '         4. Piekrītu, ka mani personas dati tiek uzglabāti SIA "ZPARTS.LV" datu bāzēs, apstrādāti tirgus izpētes, reklāmas un klientu uzskaites');
-    $pdf->Ln(4);
-    $pdf->Write(2, '         nolūkiem.');
-    $pdf->Ln(4);
-    $pdf->Write(2, '         5. Piekrītu nomainīto automobīļa daļu utilizēšanai. Atzīmet NĒ _*, ja vēlaties tās saņemt atpakaļ.');
-    $pdf->Ln(4);
-    $pdf->Write(2, '              *nav iespējams saņemt garantijas remontu ietvaros nomainītās rezerves daļas.');
-    $pdf->Ln(4);
-    $pdf->Write(3, '         6. Automobilis pēc remonta pabeigšanas, jāizņem no "ZPARTS.LV SIA teritorijas 1 darba dienas laikā, pretējā gadījumā tiks piestādīts rēķins');
-    $pdf->Ln(4);
-    $pdf->Write(2, '         par katru stāvvietā nostāvēto dienu 15.00 EUR + PVN.');
+    
 
 
 

@@ -89,7 +89,7 @@ $mysql = new mysqli('localhost', 'root', '1program4*al', 'zparts');
     <div class="block-right">
         
         <h2>Choose the details: </h2>
-        <form id="tax-bill" action="download-workorder.php" method="post">
+        <form id="tax-bill" action="download-invoice.php" method="post">
 
             <div class="box">
                 <label for="client">Client:  </label>
