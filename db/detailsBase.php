@@ -264,7 +264,7 @@ if (isset($_SESSION['user'])) {
                     echo "<td>" . $row["price"] . "</td>";
                     echo "<td><button onclick='openDetails()' type='submit' id='details' value='".$row['id']."' name='details'> Details </button></td>"; 
                     echo "<td><button type='submit' id='update' value='".$row['id']."' name='update'> Edit </button></td>"; 
-                    echo "<td><button type='submit' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
+                    echo "<td><button type='submit' onclick='return confirmDelete()' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
                 echo "</tr>";
             }
             echo "</table>";
@@ -286,8 +286,17 @@ if (isset($_SESSION['user'])) {
         if(isset($_GET['delete'])){
             $deleted = $_GET['delete'];
             $mysql->query("DELETE FROM details WHERE `id` = $deleted;");
-
+            echo "<script>window.location='http://zparts.local/db/detailsBase.php';</script>";
         }
+        ?>
+
+        <script>
+            function confirmDelete() {
+                return confirm("Are you sure you want to delete this detail?");
+            }
+        </script>
+
+        <?php
 
         if(isset($_GET['details'])){
             $selected = $_GET['details'];
@@ -303,13 +312,10 @@ if (isset($_SESSION['user'])) {
                     <input type="text" id="id" name="id" value="<?php echo $row["id"] ?>" disabled>
 
                     <label>Service name: </label>
-                    <input type="text" id="serviceName" name="serviceName" value="<?php echo $row["serviceName"] ?>" disabled>
+                    <input type="text" id="serviceName" name="serviceName" value="<?php echo $row["detailName"] ?>" disabled>
 
                     <label>Hours: </label>
-                    <input type="number" id="hours" name="hours" value="<?php echo $row["hours"] ?>" disabled>
-
-                    <label>Average price: </label>
-                    <input type="number" min="1.00" max="10000.00" step="0.10" id="avgPrice" name="avgPrice" value="<?php echo $row["avgPrice"] ?>" disabled>
+                    <input type="number" id="hours" name="hours" value="<?php echo $row["price"] ?>" disabled>
 
                     <button type="button" class="btn cancel" onclick="closeDetails()">Close</button>
                 </form>
@@ -321,11 +327,11 @@ if (isset($_SESSION['user'])) {
 
     if(isset($_POST['update'])){
         $id = $_GET['update'];
-        $service = $_POST['detailName'] ?? '';
-        $hours = $_POST['price'] ?? '';
+        $detailName = $_POST['detailName'] ?? '';
+        $price = $_POST['price'] ?? '';
         
-        $mysql->query("UPDATE services SET serviceName = '$service', hours = '$hours', avgPrice = '$avgPrice' WHERE id = '$id';");
-
+        $mysql->query("UPDATE details SET detailName = '$detailName', price = '$price' WHERE id = '$id';");
+        echo "<script>window.location='http://zparts.local/db/detailsBase.php';</script>";
     }
 
 
@@ -389,7 +395,7 @@ if (isset($_SESSION['user'])) {
                     exit();
                 }
                 $rowsCount = mysqli_num_rows($result);
-                echo "<p>Found: $rowsCount</p>";
+                echo "<form method='GET'>"; 
                 echo "<table><tr><th>Code</th><th>Detail name</th><th>Price</th></tr>";
                 foreach ($result as $row) {
                     echo "<tr>";
@@ -398,18 +404,33 @@ if (isset($_SESSION['user'])) {
                     echo "<td>" . $row["price"] . "</td>";
                     echo "<td><button onclick='openDetails()' type='submit' id='details' value='".$row['id']."' name='details'> Details </button></td>"; 
                     echo "<td><button type='submit' id='update' value='".$row['id']."' name='update'> Edit </button></td>"; 
-                    echo "<td><button type='submit' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
+                    echo "<td><button type='submit' onclick='return confirmDelete()' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
                 echo "</tr>";
                 }
                 echo "</table>";
+                echo "</form>";
                 mysqli_free_result($result);
             } else {
                 echo "Error: " . mysqli_error($mysql);
             }
 
-            $mysql->close();
-    }    
+            //$mysql->close();
 
+            if(isset($_GET['delete'])){
+                $deleted = $_GET['delete'];
+                $mysql->query("DELETE FROM details WHERE `id` = $deleted;");
+                echo "<script>window.location='http://zparts.local/db/detailsBase.php';</script>";
+            }
+            ?>
+        
+            <script>
+                function confirmDelete() {
+                    return confirm("Are you sure you want to delete this detail?");
+                }
+            </script>
+            <?php
+    } 
+    
 ?>
         
     </div>

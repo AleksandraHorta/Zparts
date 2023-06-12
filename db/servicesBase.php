@@ -345,7 +345,7 @@ if (isset($_SESSION['user'])) {
         $avgPrice = $_POST['avgPrice'] ?? '';
         
         $mysql->query("UPDATE services SET serviceName = '$service', hours = '$hours', avgPrice = '$avgPrice' WHERE id = '$id';");
-
+        echo "<script>window.location='http://zparts.local/db/servicesBase.php';</script>";
     }
 
 

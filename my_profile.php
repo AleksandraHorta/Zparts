@@ -258,14 +258,14 @@ while ($row = $result->fetch_assoc()) {
             echo "<div class='your-cars'>";
             if ($result2 = $mysql->query("SELECT c.id, c.countryNumber, CONCAT(c.carBrand, ' ', c.model, ', ', YEAR(c.regDate)) as inf FROM users as u INNER JOIN cars as c ON u.id = c.user_id WHERE u.email = '$x';")) {
                foreach($result2 as $row) {
-                    echo "<form method='GET'>";
+                    echo "<form method='GET' action='php/editCar.php'>";
                     echo "<div class='cardCar'>";
                         echo "<img src='images/car_picture.jpg' alt='Avatar' style='width:100%'>";
                         echo "<div class='cont'>";
                         echo "<h4><b>" . $row["countryNumber"] . "</b></h4>";
                         echo "<p>" . $row["inf"] . "</p>";
-                        echo "<button name='update' type='submit' class='bedit' onclick='location.href='..php/editCar.php' id='update' type='submit' value='".$row['id']."' name='update' > Edit </button> &nbsp"; 
-                        echo "<button class='bdelete' type='submit' id='delete' value='".$row['id']."' name='delete'>Delete</button>";
+                        echo "<button name='update' type='submit' class='bedit' onclick=\"location.href='php/editCar.php'\" id='update' type='submit' value='".$row['id']."' name='update' > Edit </button> &nbsp"; 
+                        echo "<button class='bdelete' onclick='return confirmDelete()' type='submit' id='delete' value='".$row['id']."' name='delete'>Delete</button>";
                         echo "</div>";
                     echo "</div>";
                     echo "<br>";
@@ -284,6 +284,11 @@ while ($row = $result->fetch_assoc()) {
             }
               
             ?>
+            <script>
+                function confirmDelete() {
+                    return confirm("Are you sure you want to delete this car?");
+                }
+            </script>
     </div>
 
         <div class="appField">
@@ -305,7 +310,7 @@ while ($row = $result->fetch_assoc()) {
                         echo "<div class='cont'>";
                         echo "<h4><b>" . $row["countryNumber"] . "</b></h4>";
                         echo "<p>" . $row["inf"] . "</p>";
-                        echo "&nbsp<button class='btndelete' type='submit' id='delete' value='".$row['id']."' name='delete'>Delete</button>";
+                        echo "&nbsp<button class='btndelete' onclick='return confirmDelete()' type='submit' id='delete' value='".$row['id']."' name='delete'>Delete</button>";
                         echo "</div>";
                     echo "</div>";
                     echo "<br>";
@@ -323,6 +328,11 @@ while ($row = $result->fetch_assoc()) {
             }
               
             ?>
+            <script>
+                function confirmDelete() {
+                    return confirm("Are you sure you want to delete this appointment?");
+                }
+            </script>
         </div>
 
 

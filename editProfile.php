@@ -7,28 +7,6 @@
         die("Error: " .mysqli_connect_error());
     }
 
-
-
-    if (isset($_POST['update'])) {
-
-        $firstname = $_POST['firstname'];
-        $user_id = $_POST['user_id'];
-        $lastname = $_POST['lastname'];
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $id = $_POST['user_id'];
-        $phone = $_POST['phone']; 
-
-        $result = $mysql->query("UPDATE `users` SET `firstname`='$firstname',`lastname`='$lastname',`email`='$email',`phone`='$phone' WHERE `id`='$user_id'");
-
-        if ($result == true) {
-            echo "Record updated successfully.";
-        } else {
-            echo "Error:";
-        }
-
-    } 
-
 if (isset($_GET['id'])) {
 
     $user_id = $_GET['id']; 
@@ -40,7 +18,7 @@ if (isset($_GET['id'])) {
 
         while ($row = $result->fetch_assoc()) {
 
-            $first_name = $row['name'];
+            $firstname = $row['name'];
             $lastname = $row['surname'];
             $email = $row['email'];
             $phone = $row['phone'];
@@ -89,9 +67,6 @@ if (isset($_GET['id'])) {
     </style>
 </head>
 <body>
-    
-</body>
-</html>
 
 <div class="container">
     <form action="" method="post">
@@ -106,7 +81,7 @@ if (isset($_GET['id'])) {
           <label for="firstName" class="fl fontLabel"> First Name: </label>
           <div class="fl icon"></div>
           <div class="input">
-            <input type="text" name="firstname" value="<?php echo $first_name; ?>" class="textBox" required="required">
+            <input type="text" name="firstname" value="<?php echo $firstname; ?>" class="textBox" required="required">
           </div>        
         </div>
   
@@ -179,6 +154,24 @@ if (isset($_GET['id'])) {
 
       <?php
 
+
+      if (isset($_POST['update'])) {
+
+        $user_id = $_POST['user_id'];  // ?? ''
+
+        $firstname = $_POST['firstname'];
+        $lastname = $_POST['lastname'];
+        $email = $_POST['email'];
+        //$password = $_POST['password'];
+        $phone = $_POST['phone']; 
+
+        $result = $mysql->query("UPDATE users SET name='$firstname', surname='$lastname',`email`='$email',`phone`='$phone' WHERE `id`='$user_id'");
+
+        header('Location: my_profile.php');
+        
+      } 
+
+
       if(isset($_POST['update-pass'])){
 
           $opassword = $_POST['old-pass'];
@@ -188,12 +181,6 @@ if (isset($_GET['id'])) {
           $opassword = md5($opassword."waalyelkasnad4312");
 
           if ($password != $opassword) {
-
-            /*function_alert("Old password is incorrect!");
-
-            function function_alert($msg) {
-              echo "<script type='text/javascript'>alert('$msg');</script>";
-            }*/
 
             echo '<script type="text/javascript">';
             echo 'alert("Old password is incorrect!")';
@@ -209,29 +196,22 @@ if (isset($_GET['id'])) {
 
           $mysql->close();
 
-
-          //header('Location: my_profile.php');
+          header('Location: my_profile.php');
 
       }
       ?>
 
       </form>
 
-
-
 </div>
 
-
 </body>
-
 </html> 
 
     <?php
 
     } else{ 
-
         echo "Something went wrong!";
-
     } 
 
 }
