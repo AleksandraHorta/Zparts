@@ -171,6 +171,16 @@
     $pdf->Write(2, '                   www.zparts.lv                                                 +371 28888111                                                info@zparts.lv'); 
     
     $pdf->Image('../images/favicon.png',96,272,10);
+
+
+
+    $currentDate = date("Y/m/d  H:i:s");
+    $filename = "workorder" . $number . ".php"; 
+    $code = "<?php\n" . file_get_contents(__FILE__);
+    $code = $conn->real_escape_string($code);
+    $conn->query("INSERT INTO pdfiles (filename, code, date, type) VALUES ('$filename', '$code', '$currentDate', 'workorder')");
+
+
     $pdf->Output("darbaUzdevums", "I");  // without this line it will not work
 
 

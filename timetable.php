@@ -233,7 +233,7 @@ if (isset($_SESSION['user'])) {
                                           INNER JOIN cars as c ON r.car_id = c.id
                                           INNER JOIN users as u ON r.user_id = u.id
                                           INNER JOIN services as s ON s.id = r.service_id
-                                          WHERE r.startDate <= '$todayDate' AND r.confirmation = 1 AND r.car_id IS NOT NULL;")) {
+                                          WHERE (r.startDate <= '$todayDate' AND r.endDate >= '$todayDate') AND r.confirmation = 1 AND r.car_id IS NOT NULL;")) {
               foreach($result1 as $row) {
                 echo "<br>";
                     echo "<form method='GET'>";
@@ -262,11 +262,11 @@ if (isset($_SESSION['user'])) {
           <h2 id="n2">Tomorrow:</h2>
           <div class="appField">
           <?php
-          $today = new DateTime();
-          $todayDate = $today->format('Y-m-d');
+          $today2 = new DateTime();
+          $tomorrow = $today2->format('Y-m-d');
 
-          $todayDate = strtotime($todayDate . ' + 1 days');
-          $todayDate = date('Y-m-d', $todayDate);
+          $tomorrow = strtotime($tomorrow . ' + 1 days');
+          $tomorrow = date('Y-m-d', $tomorrow);
 
             echo "<div class='appointments'>";
             if ($result2 = $mysql->query("SELECT CONCAT(countryNumber, ', ', carBrand, ' ', model) as car, CONCAT(r.startDate, ' - ' , r.endDate) as dates, CONCAT(name, ' ', surname, ' (', phone, ')') as user, s.serviceName
@@ -274,7 +274,7 @@ if (isset($_SESSION['user'])) {
                                           INNER JOIN cars as c ON r.car_id = c.id
                                           INNER JOIN users as u ON r.user_id = u.id
                                           INNER JOIN services as s ON s.id = r.service_id
-                                          WHERE r.startDate <= '$todayDate' AND r.confirmation = 1 AND r.car_id IS NOT NULL;")) {
+                                          WHERE (r.startDate <= '$tomorrow' AND r.endDate >= '$tomorrow') AND r.confirmation = 1 AND r.car_id IS NOT NULL;")) {
               foreach($result2 as $row) {
                 echo "<br>";
                     echo "<form method='GET'>";
@@ -303,11 +303,11 @@ if (isset($_SESSION['user'])) {
           <h3 id="n3">The day after Tomorrow:</h3>
           <div class="appField">
           <?php
-          $today = new DateTime();
-          $todayDate = $today->format('Y-m-d');
+          $today3 = new DateTime();
+          $after = $today3->format('Y-m-d');
 
-          $todayDate = strtotime($todayDate . ' + 2 days');
-          $todayDate = date('Y-m-d', $todayDate);
+          $after = strtotime($after . ' + 2 days');
+          $after = date('Y-m-d', $after);
 
             echo "<div class='appointments'>";
             if ($result2 = $mysql->query("SELECT CONCAT(countryNumber, ', ', carBrand, ' ', model) as car, CONCAT(r.startDate, ' - ' , r.endDate) as dates, CONCAT(name, ' ', surname, ' (', phone, ')') as user, s.serviceName
@@ -315,7 +315,7 @@ if (isset($_SESSION['user'])) {
                                           INNER JOIN cars as c ON r.car_id = c.id
                                           INNER JOIN users as u ON r.user_id = u.id
                                           INNER JOIN services as s ON s.id = r.service_id
-                                          WHERE r.startDate <= '$todayDate' AND r.confirmation = 1 AND r.car_id IS NOT NULL;")) {
+                                          WHERE (r.startDate <= '$after' AND r.endDate >= '$after') AND r.confirmation = 1 AND r.car_id IS NOT NULL;")) {
               foreach($result2 as $row) {
                 echo "<br>";
                     echo "<form method='GET'>";

@@ -1,10 +1,10 @@
 <?php
 
-    $conn = new mysqli('localhost', 'root', '1program4*al', 'zparts');
+$mysql = new mysqli('localhost', 'root', '1program4*al', 'zparts');
 
-    if(!$conn) {
-        die("Error: " .mysqli_connect_error());
-    }
+if(!$mysql) {
+    die("Error: " . mysqli_connect_error());
+}
 
         $service = $_POST['service'];
         $client = $_POST['client'];
@@ -14,24 +14,27 @@
         $notes = $_POST['notes'];
         $mechanician = $_POST['mechanician'];
 
-        /*if ($result = $mysql->query("SELECT countryNumber,  
-                                        FROM cars WHERE countryNumber = '$car';")) {
-            
-            $countryNumber = $row["countryNumber"];
-                    
 
-              
-        } else {
-            echo "Error: " . mysqli_error($mysql);
-        }*/
 
-        /*if ($result = $mysql->query("SELECT id FROM services WHERE serviceName = '$service';")) {
-            $service_id = $row["id"];  
-            mysqli_free_result($result);
-              
-        } else {
-            echo "Error: " . mysqli_error($mysql);
-        }*/
+        $result = $mysql->query("SELECT avgPrice FROM services WHERE serviceName = '$service';");
+
+        if ($result === false) {
+            die("Error: " . $mysql->error);
+        }
+
+
+        while ($row = $result->fetch_assoc()) {
+            $totalPrice = $row['avgPrice'];
+        }
+
+
+        $pvn = $totalPrice *21/100;
+
+        $noPVN = $totalPrice - $pvn;
+
+
+        $currentDate = date("Y/m/d  H:i:s");
+        $futureDate = date('d/m/Y', strtotime($currentDate . ' + 7 days'));
 
 
         function getMonthName() {
@@ -115,9 +118,9 @@
     $pdf->SetFont('DejaVu', '', 9);
     $pdf->Line(20,99,190,99); // 2nd and 4th is height of start and end points
     $pdf->Ln(13);
-    $pdf->Cell(0, 25, '                  Klienta sūdzības / pieprasījums', 0);
+    $pdf->Cell(0, 25, '               Preču nosaukums                                                Skaits             Cena ar PVN            PVN, 21%           Cena bez PVN', 0);
     $pdf->Ln(1);
-    $pdf->Cell(0, 38, "                  $service", 0);
+    $pdf->Cell(0, 38, "               $service                                                             1                        $totalPrice                  $pvn                       $noPVN", 0);
     $pdf->Line(20,109,190,109);
     $pdf->Ln(15);
     $pdf->Line(20,115,190,115);
@@ -125,13 +128,19 @@
     $pdf->Line(20,127,190,127);
     $pdf->Line(20,133,190,133);
 
-    $pdf->Ln(35);
+    $pdf->Ln(25);
 
+    $pdf->SetFont('DejaVu', '', 11);
+    $pdf->Cell(0, 25, "                                                                                                                  Kopā apmaksai, EUR: $totalPrice", 0);
+    $pdf->Ln(20);
     
+    $pdf->SetFont('DejaVu', '', 8);
+    $pdf->Cell(0, 25, "             Lūdzam apmaksāt līdz $futureDate Prece ir ZPARTS.LV SIA īpašums līdz pilnīgai apmaksas saņemšanai. Ja rēķins netiek savlaicīgi", 0);
+    $pdf->Ln(4);
+    $pdf->Cell(0, 25, "                apmaksāts, tiek noteiktas soda sankcijas saskaņā ar līgumu vai 0.5% no kopējās pavadzīmes summas dienā, ja līguma nav.", 0);
+     
 
-
-
-    $pdf->Ln(17);
+    $pdf->Ln(40);
     
     $pdf->SetFont('DejaVu', '', 9);
     $pdf->Write(2, "                                             Meistars: $mechanician");
@@ -152,12 +161,15 @@
     $pdf->Write(2, '                   www.zparts.lv                                                 +371 28888111                                                info@zparts.lv'); 
     
     $pdf->Image('../images/favicon.png',96,272,10);
+
+
+    $filename = "invoice" . $number . ".php";
+    $code = "<?php\n" . file_get_contents(__FILE__);
+    $code = $mysql->real_escape_string($code);
+
+    $mysql->query("INSERT INTO pdfiles (filename, code, date, type) VALUES ('$filename', '$code', '$currentDate', 'invoice')");
+
     $pdf->Output("darbaUzdevums", "I");  // without this line it will not work
-
-
-
-
-
 
 
 ?>

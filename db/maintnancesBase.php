@@ -239,9 +239,8 @@ if (isset($_SESSION['user'])) {
 
 
     <div class="block-right">
-
         <div class="f-container">
-            <form class="search" method="post" action=""> <!--../php/filterMaintnances.php-->
+            <form class="search" method="post" action="">
                 <div class="box">
                     <label>Service: </label>
                     <select name="service" type="text" placeholder="Service" class="search-input">
@@ -249,7 +248,7 @@ if (isset($_SESSION['user'])) {
                         if ($serv = $mysql->query("SELECT id, serviceName FROM `services` ORDER BY serviceName")) {
                             echo "<option value='' selected disabled hidden>Choose service</option>";
                             foreach ($serv as $row) {
-                                echo "<option value=" . $row["id"] . ">" . $row["serviceName"] . "</option>";
+                                echo "<option value=" . $row["serviceName"] . ">" . $row["serviceName"] . "</option>";
                             }
                             mysqli_free_result($serv);
                         } 
@@ -285,18 +284,6 @@ if (isset($_SESSION['user'])) {
         </div>
 
 
-        <?php
-
-        //if(isset($_POST['filter'])) { //check if form was submitted
-
-            /*$search = $_POST['search'];  // get input text
-            $search = trim($search); 
-            $search = htmlspecialchars($search);
-
-            if ($search == null) {  // if input is empty -> do nothing
-              */  
-            ?> 
-
             <div class="block-left">    
                 <div class="nav" id="navbar">
 
@@ -306,7 +293,6 @@ if (isset($_SESSION['user'])) {
 
                     <a href="../timetable.php">Timetable</a>
                     <a href="../requests.php">Requests</a>
-
                     <button class="dropdown-btn">DATABASES &#8595; </button>
                     <div class="dropdown-container">
                         <a class="active" onclick="location.href='../db/maintnancesBase.php';">Maintnance History</a>
@@ -316,29 +302,57 @@ if (isset($_SESSION['user'])) {
                         <a onclick="location.href='../db/detailsBase.php';">Details</a>
                     </div>
                     <a href="../pdf.php">PDF</a>
-                    <!--<a href="statistics.html">Statistics</a>-->
 
                     <button class="button" onclick="location.href='../php/exit.php';" id="log-out">LOG OUT</button>
 
                 </div>
 
-
                 <button class="new" onclick="location.href='../php/newMaintnance.php';">New</button>
 
 
         <?php
-            //}
 
-        if ($result = $mysql->query("SELECT m.id, s.serviceName, CONCAT(c.countryNumber, ' ', c.carBrand, '-', c.model, ', ', YEAR(c.regDate)) AS car, m.startDate, m.endDate, m.totalPrice
-                                        FROM maintnances as m
-                                        INNER JOIN services as s
-                                        ON s.id = m.service_id
-                                        INNER JOIN cars as c
-                                        ON c.id = m.car_id;")) {
+        if (isset($_POST['filter'])) {
+            $brand = $_POST['brand'];
+            $model = $_POST['model'];
+            $start = $_POST['start'];
+            $end = $_POST['end'];
+            $price = $_POST['price'];
+            $notes = $_POST['notes'];
+            $query = "SELECT m.id, s.serviceName, CONCAT(c.countryNumber, ', ', c.carBrand, '-', c.model, ' ', YEAR(c.regDate)) AS car, m.startDate, m.endDate, m.totalPrice
+                    FROM maintnances as m
+                    INNER JOIN services as s
+                    ON s.id = m.service_id
+                    INNER JOIN cars as c
+                    ON c.id = m.car_id
+                    WHERE 1=1";
+            if (!empty($brand)) {
+                $query .= " AND c.carBrand LIKE '%$brand%'";
+            }
+            if (isset($_POST['service']) && !empty($_POST['service'])) {
+                $service = $_POST['service'];
+                $query .= " AND s.serviceName LIKE '%$service%'";
+            }
+            if (!empty($model)) {
+                $query .= " AND c.model LIKE '%$model%'";
+            }
+            if (!empty($start)) {
+                $query .= " AND m.startDate >= '$start'";
+            }
+            if (!empty($end)) {
+                $query .= " AND m.endDate <= '$end'";
+            }
+            if (!empty($price)) {
+                $query .= " AND m.totalPrice = $price";
+            }
+            if (!empty($notes)) {
+                $query .= " AND m.notes LIKE '%$notes%'";
+            }
+            $result = $mysql->query($query);
             $rowsCount = mysqli_num_rows($result);
-            echo "<form method='GET' action='../php/editMaintnance.php'>"; 
-            echo "<p>Total count of maintnances in DB: $rowsCount</p>";
-            echo "<table><tr><th>Code</th><th>Service</th><th>Car</th><th>Start Date</th><th>End Date</th><th>Total Price</th></tr>";
+            //echo "<form method='GET' action='../php/editMaintnance.php'>"; 
+            echo "<p>Total count of maintenances in DB: $rowsCount</p>";
+            echo "<table><tr><th>ID</th><th>Service</th><th>Car</th><th>Start Date</th><th>End Date</th><th>Total Price</th></tr>";
             foreach ($result as $row) {
                 echo "<tr>";
                     echo "<td>" . $row["id"] . "</td>";
@@ -347,71 +361,43 @@ if (isset($_SESSION['user'])) {
                     echo "<td>" . $row["startDate"] . "</td>";
                     echo "<td>" . $row["endDate"] . "</td>";
                     echo "<td>" . $row["totalPrice"] . "</td>";
-                    echo "<td><button onclick='openDetails()' type='submit' id='details' value='".$row['id']."' name='details'> Details </button></td>"; 
-                    echo "<td><button type='submit' id='update' value='".$row['id']."' name='update'> Edit </button></td>"; 
+                    echo "<td><button type='submit' formaction='../php/editMaintnance.php' id='update' value='".$row['id']."' name='update'> Edit </button></td>"; 
                     echo "<td><button type='submit' onclick='return confirmDelete()' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
                 echo "</tr>";
             }
             echo "</table>";
-            echo "</form>";
+            //echo "</form>";
             mysqli_free_result($result);
         } else {
-            echo "Error: " . mysqli_error($mysql);
+            $result = $mysql->query("SELECT m.id, s.serviceName, CONCAT(c.countryNumber, ', ', c.carBrand, '-', c.model, ' ', YEAR(c.regDate)) AS car, m.startDate, m.endDate, m.totalPrice
+                                    FROM maintnances as m
+                                    INNER JOIN services as s
+                                    ON s.id = m.service_id
+                                    INNER JOIN cars as c
+                                    ON c.id = m.car_id;");
+            $rowsCount = mysqli_num_rows($result);
+            echo "<form method='GET'>"; 
+            echo "<p>Total count of maintenances in DB: $rowsCount</p>";
+            echo "<table><tr><th>ID</th><th>Service</th><th>Car</th><th>Start Date</th><th>End Date</th><th>Total Price</th></tr>";
+            foreach ($result as $row) {
+                echo "<tr>";
+                    echo "<td>" . $row["id"] . "</td>";
+                    echo "<td>" . $row["serviceName"] . "</td>";
+                    echo "<td>" . $row["car"] . "</td>";
+                    echo "<td>" . $row["startDate"] . "</td>";
+                    echo "<td>" . $row["endDate"] . "</td>";
+                    echo "<td>" . $row["totalPrice"] . "</td>";
+                    echo "<td><button type='submit' formaction='../php/editMaintnance.php' id='update' value='".$row['id']."' name='update'> Edit </button></td>"; 
+                    echo "<td><button type='submit' onclick='return confirmDelete()' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
+                echo "</tr>";
+            }  
+            echo "</table>";
+            echo "</form>";
+            mysqli_free_result($result);
+
         }
 
-
-        if(isset($_GET['details'])){
-            $selected = $_GET['details'];
-            $res = $mysql->query("SELECT *, CONCAT(c.countryNumber, ',  ', c.carBrand, ' ', c.model, ' (', YEAR(c.regDate), ')') AS car 
-                                    FROM maintnances as m 
-                                    INNER JOIN services as s 
-                                    ON m.service_id = s.id 
-                                    INNER JOIN cars as c
-                                    ON c.id = m.car_id
-                                    WHERE m.id = $selected;");
-
-            foreach($res as $row) {
-            
-        ?>
-            <div class="form-service3" id="MDetails">
-                <form action="#" class="form-container" method="GET">
-
-                    <label>Number: </label>
-                    <input type="number" id="id" name="id" value="<?php echo $row["id"] ?>" disabled>
-
-                    <label>Service name: </label>
-                    <input type="text" id="serviceName" name="serviceName" value="<?php echo $row["serviceName"] ?>" disabled>
-
-                    <label>Car: </label>
-                    <input type="text" id="car" name="car" value="<?php echo $row["car"] ?>" disabled>
-
-                    <label>Start date: </label>
-                    <input type="date" id="startDate" name="startDate" value="<?php echo $row["startDate"] ?>" disabled>
-                    <br><br>
-                    <label>End date: </label>
-                    <input type="date" id="endDate" name="endDate" value="<?php echo $row["endDate"] ?>" disabled>
-                    <br><br>
-                    <label>Total price: </label>
-                    <input type="number" min="1.00" max="10000.00" step="0.10" id="totalPrice" name="totalPrice" value="<?php echo $row["totalPrice"] ?>" disabled>
-
-                    <label>Mileage: </label>
-                    <input type="number" id="mileage" name="mileage" value="<?php echo $row["mileage"] ?>" disabled>
-
-                    <label>Notes: </label>
-                    <input type="text" id="notes" name="notes" value="<?php echo $row["notes"] ?>" disabled>
-
-                    <button type="button" class="btn cancel" onclick="closeDetails()">Close</button>
-                </form>
-            </div>
-
-        <?php    
-            }
-    }
-
-
-
-
-
+        
         if(isset($_GET['delete'])){
             $deleted = $_GET['delete'];
             $mysql->query("DELETE FROM maintnances WHERE `id` = $deleted;");
@@ -426,77 +412,6 @@ if (isset($_SESSION['user'])) {
             }
         </script>
 
-    <!--</div>-->
-
-        <?php
-
-        if(isset($_POST['filter'])) {
-            
-            $brand = $_POST['brand'];
-            $brand = trim($brand); 
-            $brand = htmlspecialchars($brand);
-
-            $service = $_POST['service'];
-
-            $model = $_POST['model'];
-            $model = trim($model); 
-            $model = htmlspecialchars($model);
-
-            $start = $_POST['start'];
-
-            $end = $_POST['end'];
-            
-            $price = $_POST['price'];
-
-            $notes = $_POST['notes'];
-            $notes = trim($notes); 
-            $notes = htmlspecialchars($notes);
-
-
-            if ($service == null && $brand == null && $model == null && $start == null && $end == null 
-                    && $price == null && $notes == null) {
-                exit();
-            }
-
-            if ($result = $mysql->query("SELECT m.id, s.serviceName, CONCAT(c.countryNumber, ', ', c.carBrand, '-', c.model, ' ', YEAR(c.regDate)) AS car, m.startDate, m.endDate, m.totalPrice
-                                        FROM maintnances as m
-                                        INNER JOIN services as s
-                                        ON s.id = m.service_id
-                                        INNER JOIN cars as c
-                                        ON c.id = m.car_id
-                                        WHERE c.carBrand LIKE '%$brand%'
-                                        OR s.serviceName LIKE '%$service%'
-                                        OR c.model LIKE '%$model%'
-                                        OR m.startDate LIKE '%$start%'
-                                        OR m.endDate LIKE '%$end%'
-                                        OR m.totalPrice LIKE '%$price%'
-                                        OR m.notes LIKE '%$notes%'")) {
-            $rowsCount = mysqli_num_rows($result);
-            echo "<p>Total count of maintnances in DB: $rowsCount</p>";
-            echo "<table><tr><th>ID</th><th>Service</th><th>Car</th><th>Start Date</th><th>End Date</th><th>TotalPrice</th></tr>";
-            foreach ($result as $row) {
-                echo "<tr>";
-                echo "<td>" . $row["id"] . "</td>";
-                echo "<td>" . $row["serviceName"] . "</td>";
-                echo "<td>" . $row["car"] . "</td>";
-                echo "<td>" . $row["startDate"] . "</td>";
-                echo "<td>" . $row["endDate"] . "</td>";
-                echo "<td>" . $row["totalPrice"] . "</td>";
-                echo "<td><button onclick='openDetails()' id='details' type='submit' value='".$row['id']."' name='details'> Details </button></td>"; 
-                echo "<td><button id='update' type='submit' value='".$row['id']."' name='update'> Edit </button></td>"; 
-                echo "<td><button type='submit' id='delete' value='".$row['id']."' name='delete'> Delete </button></td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-            mysqli_free_result($result);
-        } else {
-            echo "Error: " . mysqli_error($mysql);
-        }
-
-        
-        }
-        
-?>
         
     </div>
 

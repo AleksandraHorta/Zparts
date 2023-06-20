@@ -258,13 +258,13 @@ while ($row = $result->fetch_assoc()) {
             echo "<div class='your-cars'>";
             if ($result2 = $mysql->query("SELECT c.id, c.countryNumber, CONCAT(c.carBrand, ' ', c.model, ', ', YEAR(c.regDate)) as inf FROM users as u INNER JOIN cars as c ON u.id = c.user_id WHERE u.email = '$x';")) {
                foreach($result2 as $row) {
-                    echo "<form method='GET' action='php/editCar.php'>";
+                    echo "<form method='GET'>";
                     echo "<div class='cardCar'>";
                         echo "<img src='images/car_picture.jpg' alt='Avatar' style='width:100%'>";
                         echo "<div class='cont'>";
                         echo "<h4><b>" . $row["countryNumber"] . "</b></h4>";
                         echo "<p>" . $row["inf"] . "</p>";
-                        echo "<button name='update' type='submit' class='bedit' onclick=\"location.href='php/editCar.php'\" id='update' type='submit' value='".$row['id']."' name='update' > Edit </button> &nbsp"; 
+                        echo "<button name='update' type='submit' formaction='../php/editCar.php' class='bedit' onclick=\"location.href='php/editCar.php'\" id='update' type='submit' value='".$row['id']."' name='update' > Edit </button> &nbsp"; 
                         echo "<button class='bdelete' onclick='return confirmDelete()' type='submit' id='delete' value='".$row['id']."' name='delete'>Delete</button>";
                         echo "</div>";
                     echo "</div>";
@@ -281,6 +281,7 @@ while ($row = $result->fetch_assoc()) {
             if(isset($_GET['delete'])){
                 $deleted = $_GET['delete'];
                 $mysql->query("DELETE FROM cars WHERE `id` = $deleted");
+                echo "<script>window.location='http://http://zparts.local/my_profile.php';</script>";
             }
               
             ?>
@@ -325,6 +326,7 @@ while ($row = $result->fetch_assoc()) {
             if(isset($_GET['delete'])){
                 $deleted = $_GET['delete'];
                 $mysql->query("DELETE FROM appointments WHERE id = $deleted;");
+                echo "<script>window.location='http://http://zparts.local/my_profile.php';</script>";
             }
               
             ?>
@@ -372,6 +374,7 @@ while ($row = $result->fetch_assoc()) {
             if(isset($_GET['delete'])){
                 $deleted = $_GET['delete'];
                 $mysql->query("DELETE FROM requests WHERE id = $deleted;");
+                echo "<script>window.location='http://http://zparts.local/my_profile.php';</script>";
             }
               
             ?>

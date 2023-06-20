@@ -207,7 +207,7 @@ if (isset($_SESSION['user'])) {
         <img src="images/favicon.png" width="100" height="95">
     </div>
 
-    <a href="timetable.php">Timetable</a>
+    <a href="../timetable.php">Timetable</a>
     <a class="active" href="#">Requests</a>
 
     <button class="dropdown-btn">DATABASES &#8595; </button>
@@ -273,6 +273,7 @@ if (isset($_SESSION['user'])) {
         if(isset($_GET['decline'])){
             $deleted = $_GET['decline'];
             $mysql->query("DELETE FROM requests WHERE `id` = $deleted;");
+            echo "<script>window.location='http://zparts.local/requests.php';</script>";
         }
 
 
@@ -416,7 +417,9 @@ if (isset($_SESSION['user'])) {
 } else {
     echo "<div style='margin-top: 290px;'>";
     echo "<h1 style='text-align: center; height: 50%';>Something went wrong! You don't have access to this page!</h1>";
+    echo "<p style='text-align: center;'><a href='index.php'>To main page</a></p>";
     echo "</div>";
 }
+
 }
 ?>

@@ -48,7 +48,7 @@ session_start();
                     VALUES ('$user_id','$service_id', '$car_id', '$startDate', '$endDate', 0, '$comments');");
 
 
-        $to = 'localhost.' $x; //aleksandra.horta@gmail.com
+        $to = 'localhost.aleksandra.horta@gmail.com'; //$to = 'localhost.' $x; //aleksandra.horta@gmail.com
         $subject = 'Request';
         $message = 'Request was created successfully!';
         $headers = 'From: info@zparts.lv';  //info@zparts.lv

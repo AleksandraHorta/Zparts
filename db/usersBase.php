@@ -238,6 +238,7 @@ if (isset($_SESSION['user'])) {
 } else {
     echo "<div style='margin-top: 290px;'>";
     echo "<h1 style='text-align: center; height: 50%';>Something went wrong! You don't have access to this page!</h1>";
+    echo "<p style='text-align: center;'><a href='../index.php'>To main page</a></p>";
     echo "</div>";
 }
 }

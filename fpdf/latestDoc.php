@@ -73,7 +73,7 @@
         <div class="user_reg" style="text-align: center">
             <img src="../images/favicon.png" width="100" height="95">
         </div>
-        <a href="../timetable.html">Timetable</a>
+        <a href="../../timetable.php">Timetable</a>
         <a href="../requests.php">Requests</a>
         <button class="dropdown-btn">DATABASES &#8595; </button>
         <div class="dropdown-container">
@@ -109,12 +109,13 @@
         if ($result = $mysql->query("SELECT * FROM pdfiles ORDER BY date DESC")) {
             $rowsCount = mysqli_num_rows($result);
             echo "<form method='GET'>"; 
-            echo "<table><tr><th>ID</th><th>File</th><th>Date</th></tr>";
+            echo "<table><tr><th>ID</th><th>File</th><th>Date</th><th>Document Type</th></tr>";
             foreach ($result as $row) {
                 echo "<tr>";
                     echo "<td>" . $row["id"] . "</td>";
-                    echo "<td>" . $row["file"] . "</td>";
+                    echo "<td>" . $row["filename"] . "</td>";
                     echo "<td>" . $row["date"] . "</td>";
+                    echo "<td>" . $row["type"] . "</td>";
                     echo "<td><button id='".$row['id']."' type='submit' value='".$row['id']."' name='download'> Download </button></td>"; 
                 echo "</tr>";
             }
@@ -125,6 +126,43 @@
             echo "Error: " . mysqli_error($mysql);
         }
 
+
+        if (isset($_GET['download'])) {
+            $fileId = $_GET['download'];
+            $fileId = $mysql->real_escape_string($fileId);
+            $result = $mysql->query("SELECT filename, code FROM pdfiles WHERE id = '$fileId'");
+
+            if ($result && $result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $filename = $row['filename'];
+                $fileContent = $row['code'];
+
+                require('../fpdf/tfpdf.php');
+                $pdf = new tFPDF();
+                $pdf->AddPage();
+                $pdf->SetFont('Arial','B',12);
+                //$pdf->writeHTML($fileContent);
+                $fileContent = $pdf->Output('S');  //$filename, 'S'
+                
+        
+                // Set the appropriate headers for file download
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename="' . $filename . '"');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Length: ' . strlen($fileContent));
+        
+                // Send the file content to the browser
+                echo $fileContent;
+                readfile($fileContent);
+                exit;
+            } else {
+                echo "File not found.";
+            }
+
+        }
 
         $mysql->close();
 
